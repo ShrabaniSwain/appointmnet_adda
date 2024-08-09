@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application
+        android:name="com.appointment.MyApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppBarTheme"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name="com.appointment.FullScreenImageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProviderProfileDetails"
+            android:exported="false" />
+        <activity
+            android:name=".MoreActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SearchServiceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UpdatePackageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SubCategoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SettingSubCategoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileCreateSuccessActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TodoListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProviderNotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileScannerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileCurrentLocationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProviderProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProviderPrivacyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProviderTermsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProviderSupportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ImportSuccessfullyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ImportRecordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddCustomerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CrmProviderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CrmActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProviderMessageDeatilsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EnquiryLastStepActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CustomerMessageDeatilsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CustomerTermsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CustomerPrivacyPolicy"
+            android:exported="false" />
+        <activity
+            android:name=".CustomerSupportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CustomerProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SelectquestionThree"
+            android:exported="false" />
+        <activity
+            android:name=".SelectQuestionTwo"
+            android:exported="false" />
+        <activity
+            android:name=".SelectQuestionOne"
+            android:exported="false" />
+        <activity
+            android:name=".SelectOptionStepOne"
+            android:exported="false" />
+        <activity
+            android:name=".AppointmentListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TeacherActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ViewAllActivity"
+            android:exported="false" />
+        <activity
+            android:name=".viewAllActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BankDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".KycActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProviderMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ServicesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PackageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".QualificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginSignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterNowActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginUserIdActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OtpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginMobileNoHome"
+            android:exported="false" />
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".CustomerMainActivity"
+            android:exported="false" />
+
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_launcher" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/color_primary" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="MyNotification"
+            tools:node="remove" />
+    </application>
+
+</manifest>

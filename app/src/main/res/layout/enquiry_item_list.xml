@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
+    android:layout_marginEnd="15dp"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <ImageView
+            android:id="@+id/ivImage"
+            android:layout_width="73dp"
+            android:layout_height="73dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/banner"
+            android:background="@drawable/border_color"
+            android:backgroundTint="@color/white"
+            android:scaleType="fitXY"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="30 Jan 2024 at 10 AM"
+            android:textSize="10sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_marginEnd="10dp"
+            android:textColor="#36474F"
+            android:layout_marginTop="3dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@id/ivImage"
+            android:text="Plumbing"
+            app:layout_constraintTop_toTopOf="@id/ivImage"
+            android:layout_marginStart="5dp"
+            android:textColor="#182A34"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvNameDetails"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/tvName"
+            android:text="Basin Pipe Fitting"
+            android:layout_marginTop="2dp"
+            app:layout_constraintTop_toBottomOf="@id/tvName"
+            android:textColor="#182A34"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tvFixedDay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/tvName"
+            android:text="Need To Fixed By 2 Dyas"
+            android:visibility="gone"
+            android:layout_marginTop="2dp"
+            app:layout_constraintTop_toBottomOf="@id/tvNameDetails"
+            android:textColor="#182A34"
+            android:textStyle="bold"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tvLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/tvFixedDay"
+            android:layout_marginTop="2dp"
+            app:layout_constraintTop_toBottomOf="@id/tvFixedDay"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:drawablePadding="5dp"
+            android:drawableStart="@drawable/gps"
+            android:textColor="#36474F"/>
+
+        <TextView
+            android:id="@+id/tvEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/tvFixedDay"
+            android:layout_marginTop="2dp"
+            app:layout_constraintTop_toBottomOf="@id/tvLocation"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:drawablePadding="5dp"
+            android:drawableTint="@color/color_primary"
+            android:drawableStart="@drawable/small_email"
+            android:textColor="#36474F"/>
+        <TextView
+            android:id="@+id/tvPhoneNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/tvFixedDay"
+            android:layout_marginTop="2dp"
+            app:layout_constraintTop_toBottomOf="@id/tvEmail"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:drawablePadding="5dp"
+            android:drawableTint="@color/color_primary"
+            android:drawableStart="@drawable/baseline_phone_24"
+            android:textColor="#36474F"/>
+
+        <TextView
+            android:id="@+id/tvActive"
+            android:layout_width="58dp"
+            android:layout_height="24dp"
+            android:background="@drawable/green_background_color"
+            android:backgroundTint="#6EB53B"
+            android:text="Active"
+            android:textSize="10sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/white"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDate"/>
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="10dp"
+            app:layout_constraintTop_toBottomOf="@id/tvPhoneNo"
+            android:background="#E9E9E9"
+            />
+
+        <TextView
+            android:id="@+id/tvDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginHorizontal="5dp"
+            android:text="12345 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+            app:layout_constraintTop_toBottomOf="@id/view2"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

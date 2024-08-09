@@ -1,0 +1,42 @@
+package com.appointment.tutionservice
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.appointment.tutionservice.databinding.CustomerNotificationItemListBinding
+import java.text.SimpleDateFormat
+import java.util.Locale
+
+class ProviderNotificationAdapter(val notification: List<Notification>) : RecyclerView.Adapter<ProviderNotificationAdapter.CardViewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.customer_notification_item_list, parent, false)
+        return CardViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
+        val item = notification[position]
+        holder.bind(item)
+    }
+
+    override fun getItemCount(): Int {
+        return notification.size
+    }
+
+    inner class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val binding = CustomerNotificationItemListBinding.bind(itemView)
+
+        fun bind(notificationText: Notification) {
+            Utility.itemBackGround(itemView)
+            binding.tvNotificationdetails.text = notificationText.notificationMessage
+            binding.tvPaymentReminder.text = notificationText.notificationTitle
+            val dateStr = notificationText.date
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+            val date = dateFormat.parse(dateStr)
+            val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val formattedDate = date?.let { dateFormatter.format(it) }
+            binding.tvPaymentDate.text = formattedDate
+        }
+    }
+}

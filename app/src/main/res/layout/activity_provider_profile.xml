@@ -1,0 +1,1470 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProviderProfileActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_primary"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_arrow_back_ios_24"
+                app:tint="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="My Profile"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_gravity="center"/>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toolbarButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/color_primary">
+
+            <ImageView
+                android:id="@+id/profile"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="15dp"
+                android:src="@drawable/baseline_person_outline_24"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <ImageView
+                android:id="@+id/setting"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:layout_constraintStart_toEndOf="@id/profile"
+                app:layout_constraintEnd_toStartOf="@id/location"
+                android:layout_marginStart="15dp"
+                android:src="@drawable/baseline_settings_24"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <ImageView
+                android:id="@+id/location"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:layout_constraintStart_toEndOf="@id/setting"
+                app:layout_constraintEnd_toStartOf="@id/scanned"
+                android:src="@drawable/my_location"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/white" />
+
+
+            <ImageView
+                android:id="@+id/scanned"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:src="@drawable/baseline_cloud_download_24"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/white" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imageView"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:scaleType="fitXY"
+            android:layout_marginTop="15dp"
+            android:background="@color/back_ground_color"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbarButton"
+            app:shapeAppearanceOverlay="@style/CircleImageView"
+            app:srcCompat="@drawable/baseline_person_24" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="@id/imageView"
+            app:layout_constraintEnd_toEndOf="@id/imageView"
+            app:srcCompat="@drawable/camera" />
+
+        <TextView
+            android:id="@+id/tvGeneralInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/imageView"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="General Information"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/color_primary"
+            android:layout_marginTop="15dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tvGeneralInfo"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Name"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#2A4767"
+            android:layout_marginTop="15dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <EditText
+            android:id="@+id/etNameSelect"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintTop_toBottomOf="@id/tvName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="8dp"
+            android:gravity="start|center"
+            android:textSize="18sp"
+            android:textColor="#6F7882"
+            android:background="@drawable/otp_box_background"
+            />
+        <TextView
+            android:id="@+id/tvMobile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/etNameSelect"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Phone Number"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#2A4767"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <TextView
+            android:id="@+id/etMobileNo"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintTop_toBottomOf="@id/tvMobile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:maxLength="10"
+            android:padding="8dp"
+            android:gravity="start|center"
+            android:textSize="18sp"
+            android:textColor="#6F7882"
+            android:inputType="number"
+            android:background="@drawable/otp_box_background"
+            />
+
+        <TextView
+            android:id="@+id/tvEmailID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/etMobileNo"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Email ID"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#2A4767"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <EditText
+            android:id="@+id/etEmailIDSelect"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintTop_toBottomOf="@id/tvEmailID"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="8dp"
+            android:gravity="start|center"
+            android:textSize="18sp"
+            android:textColor="#6F7882"
+            android:inputType="textEmailAddress"
+            android:background="@drawable/otp_box_background"
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/type"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:layout_constraintTop_toBottomOf="@id/etEmailIDSelect"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/otp_box_background"
+            app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/etType"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginHorizontal="10dp"
+            android:padding="8dp"
+            android:drawableEnd="@drawable/baseline_star_24"
+            android:gravity="start|center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#6F7882"
+            android:hint="Type"
+            />
+
+            <TextView
+                android:id="@+id/etDropdown"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginHorizontal="10dp"
+                android:padding="8dp"
+                android:drawableTint="#6F7882"
+                android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
+                android:gravity="start|center"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:text="Individual"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tvCompanyInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/type"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Company Information"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/color_primary"
+            android:layout_marginTop="15dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <TextView
+            android:id="@+id/tvAccountMobile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tvCompanyInfo"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Alternate Mobile No."
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#2A4767"
+            android:layout_marginTop="15dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <EditText
+            android:id="@+id/etAccMobileNoSelect"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintTop_toBottomOf="@id/tvAccountMobile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="8dp"
+            android:gravity="start|center"
+            android:textSize="18sp"
+            android:textColor="#6F7882"
+            android:maxLength="10"
+            android:inputType="number"
+            android:background="@drawable/otp_box_background"
+            />
+        <TextView
+            android:id="@+id/tvAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/etAccMobileNoSelect"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Aadhaar No."
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#2A4767"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <EditText
+            android:id="@+id/etAccNoSelect"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintTop_toBottomOf="@id/tvAccount"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="8dp"
+            android:gravity="start|center"
+            android:textSize="18sp"
+            android:textColor="#6F7882"
+            android:background="@drawable/otp_box_background"
+            />
+
+        <TextView
+            android:id="@+id/tvBankInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/etAccNoSelect"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Bank Details"
+            android:visibility="gone"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/color_primary"
+            android:layout_marginTop="15dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <TextView
+            android:id="@+id/tvBankAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tvBankInfo"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Account No."
+            android:visibility="gone"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#2A4767"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <EditText
+            android:id="@+id/etBankAccNoSelect"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintTop_toBottomOf="@id/tvBankAccount"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="8dp"
+            android:visibility="gone"
+            android:gravity="start|center"
+            android:textSize="18sp"
+            android:inputType="number"
+            android:textColor="#6F7882"
+            android:background="@drawable/otp_box_background"
+            />
+
+        <TextView
+            android:id="@+id/tvBankName"
+            android:layout_width="wrap_content"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/etBankAccNoSelect"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Bank Name"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#2A4767"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <EditText
+            android:id="@+id/etBankAccNameSelect"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintTop_toBottomOf="@id/tvBankName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="8dp"
+            android:gravity="start|center"
+            android:visibility="gone"
+            android:textSize="18sp"
+            android:textColor="#6F7882"
+            android:background="@drawable/otp_box_background"
+            />
+
+        <TextView
+            android:id="@+id/tvIfsc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/etBankAccNameSelect"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="IFSC Code"
+            android:visibility="gone"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#2A4767"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <EditText
+            android:id="@+id/etIfscNo"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintTop_toBottomOf="@id/tvIfsc"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="8dp"
+            android:visibility="gone"
+            android:gravity="start|center"
+            android:textSize="18sp"
+            android:textColor="#6F7882"
+            android:background="@drawable/otp_box_background"
+            />
+
+        <TextView
+            android:id="@+id/tvCardNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/etIfscNo"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Branch Name"
+            android:visibility="gone"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#2A4767"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <EditText
+            android:id="@+id/etCardNoSelect"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintTop_toBottomOf="@id/tvCardNo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="8dp"
+            android:gravity="start|center"
+            android:textSize="18sp"
+            android:visibility="gone"
+            android:textColor="#6F7882"
+            android:background="@drawable/otp_box_background"
+            />
+
+        <TextView
+            android:id="@+id/tvSocialLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/etCardNoSelect"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Social Links"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/color_primary"
+            android:layout_marginTop="15dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <TextView
+            android:id="@+id/tvTwitter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tvSocialLink"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Instagram"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#2A4767"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <EditText
+            android:id="@+id/etTwitterSelect"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintTop_toBottomOf="@id/tvTwitter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="8dp"
+            android:gravity="start|center"
+            android:textSize="18sp"
+            android:textColor="#6F7882"
+            android:background="@drawable/otp_box_background"
+            />
+        <TextView
+            android:id="@+id/tvGoogle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/etTwitterSelect"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="YouTube"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#2A4767"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <EditText
+            android:id="@+id/etGoodlePlay"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintTop_toBottomOf="@id/tvGoogle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="8dp"
+            android:gravity="start|center"
+            android:textSize="18sp"
+            android:textColor="#6F7882"
+            android:background="@drawable/otp_box_background"
+            />
+
+        <TextView
+            android:id="@+id/tvFaceBook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/etGoodlePlay"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Facebook"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#2A4767"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <EditText
+            android:id="@+id/etFacebook"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintTop_toBottomOf="@id/tvFaceBook"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="8dp"
+            android:gravity="start|center"
+            android:textSize="18sp"
+            android:textColor="#6F7882"
+            android:background="@drawable/otp_box_background"
+            />
+
+        <TextView
+            android:id="@+id/tvWebsite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/etFacebook"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Website"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#2A4767"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <EditText
+            android:id="@+id/etWebsite"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintTop_toBottomOf="@id/tvWebsite"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="8dp"
+            android:gravity="start|center"
+            android:textSize="18sp"
+            android:textColor="#6F7882"
+            android:background="@drawable/otp_box_background"
+            />
+
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/etWebsite"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Description"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#2A4767"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <EditText
+            android:id="@+id/etDescription"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintTop_toBottomOf="@id/tvDescription"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="8dp"
+            android:gravity="start|center"
+            android:textSize="18sp"
+            android:textColor="#6F7882"
+            android:background="@drawable/otp_box_background"
+            />
+
+        <TextView
+            android:id="@+id/tvBusinessName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/etDescription"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Business Name"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#2A4767"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <EditText
+            android:id="@+id/etBusinessName"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintTop_toBottomOf="@id/tvBusinessName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="8dp"
+            android:gravity="start|center"
+            android:textSize="18sp"
+            android:textColor="#6F7882"
+            android:background="@drawable/otp_box_background"
+            />
+
+        <TextView
+            android:id="@+id/tvLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/etBusinessName"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Logo"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#2A4767"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <TextView
+            android:id="@+id/etScannerLogo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tvLogo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="15dp"
+            android:padding="8dp"
+            android:drawablePadding="8dp"
+            android:drawableStart="@drawable/baseline_cloud_download_24"
+            android:textStyle="bold"
+            android:gravity="start|center"
+            android:textSize="18sp"
+            android:textColor="@color/color_primary"
+            android:text="Upload Logo"
+            />
+
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:visibility="gone"
+            android:scaleType="fitXY"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etScannerLogo"/>
+
+        <ImageView
+            android:id="@+id/ivIdProof"
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:visibility="gone"
+            android:scaleType="fitXY"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivLogo"/>
+
+        <TextView
+            android:id="@+id/tvExperience"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/ivIdProof"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Experience"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#2A4767"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <EditText
+            android:id="@+id/etExperience"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintTop_toBottomOf="@id/tvExperience"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="8dp"
+            android:hint="D: 1 year to 50 years"
+            android:gravity="start|center"
+            android:textSize="18sp"
+            android:textColor="#6F7882"
+            android:background="@drawable/otp_box_background"
+            />
+
+        <TextView
+            android:id="@+id/tvDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/etExperience"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Day"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#2A4767"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <AutoCompleteTextView
+            android:id="@+id/etDate"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintTop_toBottomOf="@id/tvDay"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="8dp"
+            android:gravity="start|center"
+            android:textSize="18sp"
+            android:textColor="#6F7882"
+            android:background="@drawable/otp_box_background"
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/sundayCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/etDate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/tvSunday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="For Sunday"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#2A4767"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <TextView
+            android:id="@+id/tvOPen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tvSunday"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Open Time"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#2A4767"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <TextView
+            android:id="@+id/etOpen"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintTop_toBottomOf="@id/tvOPen"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="8dp"
+            android:gravity="start|center"
+            android:textSize="18sp"
+            android:textColor="#6F7882"
+            android:background="@drawable/otp_box_background"
+            />
+
+        <TextView
+            android:id="@+id/tvClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/etOpen"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Close Time"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#2A4767"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <TextView
+            android:id="@+id/etClose"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintTop_toBottomOf="@id/tvClose"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="5dp"
+            android:padding="8dp"
+            android:gravity="start|center"
+            android:textSize="18sp"
+            android:textColor="#6F7882"
+            android:background="@drawable/otp_box_background"
+            />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mondayCard"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/sundayCard"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/tvMonday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="For Monday"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#2A4767"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="10dp"/>
+
+            <TextView
+                android:id="@+id/tvMondayOPen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tvMonday"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="Open Time"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#2A4767"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="10dp"/>
+
+            <TextView
+                android:id="@+id/etMondayOpen"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:layout_constraintTop_toBottomOf="@id/tvMondayOPen"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="5dp"
+                android:padding="8dp"
+                android:gravity="start|center"
+                android:textSize="18sp"
+                android:textColor="#6F7882"
+                android:background="@drawable/otp_box_background"
+                />
+
+            <TextView
+                android:id="@+id/tvMondayClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/etMondayOpen"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="Close Time"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#2A4767"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="10dp"/>
+
+            <TextView
+                android:id="@+id/etMondayClose"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:layout_constraintTop_toBottomOf="@id/tvMondayClose"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="5dp"
+                android:padding="8dp"
+                android:gravity="start|center"
+                android:textSize="18sp"
+                android:textColor="#6F7882"
+                android:background="@drawable/otp_box_background"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tuesCard"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/mondayCard"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/tvTuesDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="For Tuesday"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#2A4767"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="10dp"/>
+
+            <TextView
+                android:id="@+id/tvTuesDayOPen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tvTuesDay"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="Open Time"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#2A4767"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="10dp"/>
+
+            <TextView
+                android:id="@+id/etTuesDayOpen"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:layout_constraintTop_toBottomOf="@id/tvTuesDayOPen"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="5dp"
+                android:padding="8dp"
+                android:gravity="start|center"
+                android:textSize="18sp"
+                android:textColor="#6F7882"
+                android:background="@drawable/otp_box_background"
+                />
+
+            <TextView
+                android:id="@+id/tvTuesDayClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/etTuesDayOpen"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="Close Time"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#2A4767"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="10dp"/>
+
+            <TextView
+                android:id="@+id/etTuesDayClose"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:layout_constraintTop_toBottomOf="@id/tvTuesDayClose"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="5dp"
+                android:padding="8dp"
+                android:gravity="start|center"
+                android:textSize="18sp"
+                android:textColor="#6F7882"
+                android:background="@drawable/otp_box_background"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/WedCard"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tuesCard"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/tvWedDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="For Wednesday"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#2A4767"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="10dp"/>
+
+            <TextView
+                android:id="@+id/tvWedDayOPen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tvWedDay"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="Open Time"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#2A4767"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="10dp"/>
+
+            <TextView
+                android:id="@+id/etWedDayOpen"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:layout_constraintTop_toBottomOf="@id/tvWedDayOPen"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="5dp"
+                android:padding="8dp"
+                android:gravity="start|center"
+                android:textSize="18sp"
+                android:textColor="#6F7882"
+                android:background="@drawable/otp_box_background"
+                />
+
+            <TextView
+                android:id="@+id/tvWedDayClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/etWedDayOpen"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="Close Time"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#2A4767"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="10dp"/>
+
+            <TextView
+                android:id="@+id/etWedDayClose"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:layout_constraintTop_toBottomOf="@id/tvWedDayClose"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="5dp"
+                android:padding="8dp"
+                android:gravity="start|center"
+                android:textSize="18sp"
+                android:textColor="#6F7882"
+                android:background="@drawable/otp_box_background"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/thusCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/WedCard"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/tvThuDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="For Thursday"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#2A4767"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="10dp"/>
+
+            <TextView
+                android:id="@+id/tvThuDayOPen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tvThuDay"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="Open Time"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#2A4767"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="10dp"/>
+
+            <TextView
+                android:id="@+id/etThuDayOpen"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:layout_constraintTop_toBottomOf="@id/tvThuDayOPen"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="5dp"
+                android:padding="8dp"
+                android:gravity="start|center"
+                android:textSize="18sp"
+                android:textColor="#6F7882"
+                android:background="@drawable/otp_box_background"
+                />
+
+            <TextView
+                android:id="@+id/tvThuDayClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/etThuDayOpen"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="Close Time"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#2A4767"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="10dp"/>
+
+            <TextView
+                android:id="@+id/etThuDayClose"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:layout_constraintTop_toBottomOf="@id/tvThuDayClose"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="5dp"
+                android:padding="8dp"
+                android:gravity="start|center"
+                android:textSize="18sp"
+                android:textColor="#6F7882"
+                android:background="@drawable/otp_box_background"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/friCard"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/thusCard"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/tvFriDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="For Friday"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#2A4767"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="10dp"/>
+
+            <TextView
+                android:id="@+id/tvFriDayOPen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tvFriDay"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="Open Time"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#2A4767"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="10dp"/>
+
+            <TextView
+                android:id="@+id/etFriDayOpen"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:layout_constraintTop_toBottomOf="@id/tvFriDayOPen"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="5dp"
+                android:padding="8dp"
+                android:gravity="start|center"
+                android:textSize="18sp"
+                android:textColor="#6F7882"
+                android:background="@drawable/otp_box_background"
+                />
+
+            <TextView
+                android:id="@+id/tvFriDayClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/etFriDayOpen"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="Close Time"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#2A4767"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="10dp"/>
+
+            <TextView
+                android:id="@+id/etFriDayClose"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:layout_constraintTop_toBottomOf="@id/tvFriDayClose"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="5dp"
+                android:padding="8dp"
+                android:gravity="start|center"
+                android:textSize="18sp"
+                android:textColor="#6F7882"
+                android:background="@drawable/otp_box_background"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/satCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/friCard"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/tvSatDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="For Saturday"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#2A4767"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="10dp"/>
+
+            <TextView
+                android:id="@+id/tvSatDayOPen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tvSatDay"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="Open Time"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#2A4767"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="10dp"/>
+
+            <TextView
+                android:id="@+id/etSatDayOpen"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:layout_constraintTop_toBottomOf="@id/tvSatDayOPen"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="5dp"
+                android:padding="8dp"
+                android:gravity="start|center"
+                android:textSize="18sp"
+                android:textColor="#6F7882"
+                android:background="@drawable/otp_box_background"
+                />
+
+            <TextView
+                android:id="@+id/tvSatDayClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/etSatDayOpen"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="Close Time"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#2A4767"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="10dp"/>
+
+            <TextView
+                android:id="@+id/etSatDayClose"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:layout_constraintTop_toBottomOf="@id/tvSatDayClose"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="5dp"
+                android:padding="8dp"
+                android:gravity="start|center"
+                android:textSize="18sp"
+                android:textColor="#6F7882"
+                android:background="@drawable/otp_box_background"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tvDiscountBanner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/satCard"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Discount Banner"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#2A4767"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <TextView
+            android:id="@+id/etBanner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tvDiscountBanner"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="15dp"
+            android:padding="8dp"
+            android:drawablePadding="8dp"
+            android:drawableStart="@drawable/baseline_cloud_download_24"
+            android:textStyle="bold"
+            android:gravity="start|center"
+            android:textSize="18sp"
+            android:textColor="@color/color_primary"
+            android:text="Upload Discount Banner"
+            />
+
+        <ImageView
+            android:id="@+id/ivBanner"
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:visibility="gone"
+            android:scaleType="fitXY"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etBanner"/>
+
+        <TextView
+            android:id="@+id/tvPhotos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/ivBanner"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Photos"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#2A4767"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvUploaded"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvPhotos"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPhotos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rvUploaded"
+            />
+
+
+        <TextView
+            android:id="@+id/btnNext"
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:textSize="18sp"
+            android:text="Next"
+            android:padding="14dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_marginTop="40dp"
+            android:layout_marginHorizontal="18dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="15dp"
+            app:layout_constraintTop_toBottomOf="@id/rvPhotos"
+            android:backgroundTint="@color/red"
+            android:background="@drawable/edit_text_background_box"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tvName"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:indeterminateTint="@color/color_primary"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/btnNext"
+            android:layout_marginBottom="50dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:indeterminateTint="@color/color_primary"
+            android:visibility="gone" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

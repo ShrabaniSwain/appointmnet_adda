@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "509961440258",
+    "project_id": "appointmentadda-be5f4",
+    "storage_bucket": "appointmentadda-be5f4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:509961440258:android:76c2a6bd6a05b59017eb1b",
+        "android_client_info": {
+          "package_name": "com.appointment.tutionservice"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCp5XbP91ZOBMegJTxuk6MQ0zDYu3HzMfs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
