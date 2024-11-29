@@ -47,9 +47,10 @@ class UpdatePackageActivity : AppCompatActivity(), PaymentResultListener {
 
         call.enqueue(object : Callback<MembershipPackagesResponse> {
             override fun onResponse(call: Call<MembershipPackagesResponse>, response: Response<MembershipPackagesResponse>) {
+                Log.i("TAG", "response: $response")
+
                 if (response.isSuccessful) {
                     hideProgressBar()
-                    Log.i("TAG", "response: ${response.body()}")
                     val errorBody = response.errorBody()
                     packageData = response.body()?.data?.membershipPackages ?: emptyList()
 
@@ -65,7 +66,7 @@ class UpdatePackageActivity : AppCompatActivity(), PaymentResultListener {
                         val amount = Math.round(notificationText.packagePrice.toFloat() * 100).toInt()
                         Checkout.preload(applicationContext)
                         val co = Checkout()
-                        co.setKeyID("rzp_live_IUZIC74P5DBuVS")
+                        co.setKeyID(Constant.RAZORPAY_KEY)
                         val obj = JSONObject()
                         try {
                             obj.put("name", Constant.Provider_Name)

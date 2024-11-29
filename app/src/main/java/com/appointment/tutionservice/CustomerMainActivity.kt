@@ -1,6 +1,7 @@
 package com.appointment.tutionservice
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -28,7 +29,6 @@ class CustomerMainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var isLoggedOut = false
     private lateinit var headerBinding: HeaderLayoutBinding
-
     private val homeFragment: Fragment = CustomerHomeFragment()
     private val requestFragment: Fragment = CustomerRequestsFragment()
     private val notificationFragment: Fragment = CustomerNotificationFragment()
@@ -38,8 +38,16 @@ class CustomerMainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         showProgressBar()
         getCustomerProfileDetails()
+
+//        val intent = Intent(this, ApiService::class.java)
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            startForegroundService(intent)
+//        } else {
+//            startService(intent)
+//        }
 
         headerBinding = HeaderLayoutBinding.bind(binding.navView.getHeaderView(0))
         Glide.with(applicationContext)

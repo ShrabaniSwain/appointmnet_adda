@@ -30,7 +30,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="30 Jan 2024 at 10 AM"
             android:layout_marginStart="5dp"
             app:layout_constraintLeft_toRightOf="@id/tvDate"
             android:textColor="#36474F"

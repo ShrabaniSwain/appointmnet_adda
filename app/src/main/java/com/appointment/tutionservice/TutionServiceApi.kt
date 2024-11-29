@@ -28,10 +28,10 @@ interface TutionServiceApi {
         @Body loginMobileNoModel: LoginMobileNoModel,
     ): Call<APiModel>
 
-    @POST("appCrmDocumentSendSms")
-    fun sendSmsToUser(
-        @Body smsRequest: SmsRequest,
-    ): Call<UpdateProfileResponse>
+    @POST("isCheckReferralId")
+    fun isCheckReferralId(
+        @Body referralData: ReferralRequest,
+    ): Call<ReferralCodeResponse>
 
     @POST("jobDealAction")
     fun jobDealAction(
@@ -76,6 +76,11 @@ interface TutionServiceApi {
     @POST("changeJobStatus")
     fun changeJobStatus(
         @Body jobStatusChange: JobStatusChange,
+    ): Call<UpdateProfileResponse>
+
+    @POST("rechargeWallet")
+    fun rechargeWallet(
+        @Body paymentRequest: PaymentRequest,
     ): Call<UpdateProfileResponse>
 
     @POST("appSaveTodoStatus")
@@ -217,6 +222,26 @@ interface TutionServiceApi {
         @Part provider_banner: MultipartBody.Part
     ): Call<ProviderGalleryResponse>
 
+    @Multipart
+    @POST("appCrmDocumentSendSms")
+    fun sendSmsToUser(
+        @Part("message") message: RequestBody,
+        @Part("user_name") userName: RequestBody,
+        @Part("user_mobile") userMobile: RequestBody,
+        @Part("send_sms_mobile") sendSmsMobile: RequestBody,
+        @Part("user_id") userId: RequestBody,
+        @Part("type") type: RequestBody,
+        @Part("api_key") apiKey: RequestBody,
+        @Part("device_id") deviceId: RequestBody,
+        @Part("device_type") deviceType: RequestBody,
+        @Part("device_token") deviceToken: RequestBody,
+        @Part("app_user_id") appUserId: RequestBody,
+        @Part("app_version") appVersion: RequestBody,
+        @Part("app_user_key") appUserKey: RequestBody,
+        @Part("lat") lat: RequestBody,
+        @Part("lng") lng: RequestBody,
+        @Part push_image: MultipartBody.Part?
+    ): Call<MessageAPiResponse>
 
     @Multipart
     @POST("appUserDocumentUpload")
@@ -294,6 +319,40 @@ interface TutionServiceApi {
         @Path("appVersion") appVersion: String
     ): Call<SearchBarResponse>
 
+    @GET("walletHistory/user_mobile/{userMobile}/api_key/{apiKey}/device_id/{deviceId}/device_token/{deviceToken}/app_user_key/{appUserKey}/app_user_id/{appUserId}/app_version/{appVersion}")
+    fun getWalletHistoryData(
+        @Path("userMobile") userMobile: String,
+        @Path("apiKey") apiKey: String,
+        @Path("deviceId") deviceId: String,
+        @Path("deviceToken") deviceToken: String,
+        @Path("appUserKey") appUserKey: String,
+        @Path("appUserId") appUserId: String,
+        @Path("appVersion") appVersion: String
+    ): Call<WalletResponse>
+
+    @GET("allPushNotificationList/user_mobile/{userMobile}/api_key/{apiKey}/device_id/{deviceId}/device_token/{deviceToken}/app_user_key/{appUserKey}/app_user_id/{appUserId}/app_version/{appVersion}")
+    fun allPushNotificationList(
+        @Path("userMobile") userMobile: String,
+        @Path("apiKey") apiKey: String,
+        @Path("deviceId") deviceId: String,
+        @Path("deviceToken") deviceToken: String,
+        @Path("appUserKey") appUserKey: String,
+        @Path("appUserId") appUserId: String,
+        @Path("appVersion") appVersion: String
+    ): Call<AlertNotifyResponse>
+
+    @GET("updatePushNotification/user_mobile/{userMobile}/api_key/{apiKey}/device_id/{deviceId}/device_token/{deviceToken}/app_user_key/{appUserKey}/app_user_id/{appUserId}/notification_id/{notificationId}/app_version/{appVersion}")
+    fun updatePushNotification(
+        @Path("userMobile") userMobile: String,
+        @Path("apiKey") apiKey: String,
+        @Path("deviceId") deviceId: String,
+        @Path("deviceToken") deviceToken: String,
+        @Path("appUserKey") appUserKey: String,
+        @Path("appUserId") appUserId: String,
+        @Path("notificationId") notificationId: String,
+        @Path("appVersion") appVersion: String
+    ): Call<UpdateNotificationResponse>
+
     @GET("getAllNotifications/user_mobile/{userMobile}/api_key/{apiKey}/device_id/{deviceId}/device_token/{deviceToken}/app_user_key/{appUserKey}/app_user_id/{appUserId}/app_version/{appVersion}")
     fun getAllNotifications(
         @Path("userMobile") userMobile: String,
@@ -349,6 +408,17 @@ interface TutionServiceApi {
         @Path("appUserId") appUserId: String,
         @Path("appVersion") appVersion: String
     ): Call<GetLocationResponse>
+
+    @GET("videoTutoriaList/user_mobile/{userMobile}/api_key/{apiKey}/device_id/{deviceId}/device_token/{deviceToken}/app_user_key/{appUserKey}/app_user_id/{appUserId}/app_version/{appVersion}")
+    fun videoTutoriaList(
+        @Path("userMobile") userMobile: String,
+        @Path("apiKey") apiKey: String,
+        @Path("deviceId") deviceId: String,
+        @Path("deviceToken") deviceToken: String,
+        @Path("appUserKey") appUserKey: String,
+        @Path("appUserId") appUserId: String,
+        @Path("appVersion") appVersion: String
+    ): Call<TutorialResponse>
 
     @GET("getAppUserServices/user_mobile/{userMobile}/api_key/{apiKey}/device_id/{deviceId}/device_token/{deviceToken}/app_user_key/{appUserKey}/app_user_id/{appUserId}/app_version/{appVersion}")
     fun getProviderProfileDetails(
@@ -408,6 +478,18 @@ interface TutionServiceApi {
         @Path("jpYear") jpYear: String,
         @Path("offSet") offSet: String
     ): Call<BookingApiResponse>
+
+    @GET("userUsedReferralId/user_mobile/{userMobile}/api_key/{apiKey}/device_id/{deviceId}/device_token/{deviceToken}/app_user_key/{appUserKey}/app_user_id/" +
+            "{appUserId}/app_version/{appVersion}")
+    fun getUserUsedReferralId(
+        @Path("userMobile") userMobile: String,
+        @Path("apiKey") apiKey: String,
+        @Path("deviceId") deviceId: String,
+        @Path("deviceToken") deviceToken: String,
+        @Path("appUserKey") appUserKey: String,
+        @Path("appUserId") appUserId: String,
+        @Path("appVersion") appVersion: String,
+    ): Call<ReferralIdResponse>
 
     @GET("getServiceProviderJobListing/user_mobile/{userMobile}/api_key/{apiKey}/device_id/{deviceId}/device_token/{deviceToken}/app_user_key/{appUserKey}/app_user_id/" +
             "{appUserId}/app_version/{appVersion}/job_post_status/{jobPostStatus}/jp_month/{jpMonth}/jp_year/{jpYear}/offset/{offSet}")

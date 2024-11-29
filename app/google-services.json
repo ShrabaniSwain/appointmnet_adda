@@ -1,26 +1,37 @@
 {
   "project_info": {
-    "project_number": "509961440258",
-    "project_id": "appointmentadda-be5f4",
-    "storage_bucket": "appointmentadda-be5f4.appspot.com"
+    "project_number": "1069619175032",
+    "firebase_url": "https://appointmentadda-8b036-default-rtdb.firebaseio.com",
+    "project_id": "appointmentadda-8b036",
+    "storage_bucket": "appointmentadda-8b036.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:509961440258:android:76c2a6bd6a05b59017eb1b",
+        "mobilesdk_app_id": "1:1069619175032:android:4d736e684df585e4b4978d",
         "android_client_info": {
           "package_name": "com.appointment.tutionservice"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1069619175032-p3f17if37i314qs72c4h43jcir1mjnlq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyCp5XbP91ZOBMegJTxuk6MQ0zDYu3HzMfs"
+          "current_key": "AIzaSyAwWvKpR9EBNnIXbkcKx-4p7ZU1QH_bUfA"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1069619175032-p3f17if37i314qs72c4h43jcir1mjnlq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

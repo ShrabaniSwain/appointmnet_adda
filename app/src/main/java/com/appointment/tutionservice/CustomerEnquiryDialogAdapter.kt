@@ -43,6 +43,14 @@ class CustomerEnquiryDialogAdapter(val context: Context, val bids: List<JobPostL
         fun bind(supportDetails : JobPostLog) {
             Utility.itemBackGround(itemView)
             binding.tvName.text = supportDetails.user_profile_name
+            binding.tvName.setOnClickListener {
+                Constant.SERVICE_PROVIDER_ID = supportDetails.app_user_id
+                Constant.PROVIDER_MOBILE = supportDetails.user_mobile
+                Constant.PROVIDER_KEY = supportDetails.app_user_key
+                Constant.PROVIDER_ID = supportDetails.app_user_id
+                val intent = Intent(context, ProviderProfileDetails::class.java)
+                itemView.context.startActivity(intent)
+            }
             binding.tvBidsAmount.text = supportDetails.amount
             binding.tvstar.text = supportDetails.remarks
             val rating = supportDetails.ratings.toFloat()
@@ -108,6 +116,7 @@ class CustomerEnquiryDialogAdapter(val context: Context, val bids: List<JobPostL
                             Constant.API_KEY, Utility.getDeviceId(context), Utility.deviceType, Utility.deviceToken, Constant.APP_USER_ID.toString(), Constant.APP_VERSION_NAME.toString(), Constant.APP_USER_KEY, "", 0.0, 0.0)
                         Toast.makeText(context, "Confirmed", Toast.LENGTH_SHORT).show()
                         jobDealAction(dealAction)
+                        Log.i("TAG", "dealAction: $dealAction")
                         dialog.dismiss()
                     }
                     .setNegativeButton("No") { dialog, id ->

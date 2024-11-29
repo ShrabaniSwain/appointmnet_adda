@@ -31,6 +31,14 @@ class RegisterNowActivity : AppCompatActivity() {
     private var selectedCityId: String? = null
     private var gender: String = ""
 
+    var etName = ""
+    var etMobileNumber = ""
+    var etEmail = ""
+    var etCity = ""
+    var etState = ""
+    var etPinCode = ""
+    var etReferralCode = ""
+
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,12 +62,13 @@ class RegisterNowActivity : AppCompatActivity() {
         }
 
         binding.btnNext.setOnClickListener {
-            val etName = binding.etName.text.toString()
-            val etMobileNumber = binding.etPhone.text.toString()
-            val etEmail = binding.etEmail.text.toString()
-            val etCity = binding.etCity.text.toString()
-            val etState = binding.etState.text.toString()
-            val etPinCode = binding.etPinCode.text.toString()
+            etName = binding.etName.text.toString()
+            etMobileNumber = binding.etPhone.text.toString()
+            etEmail = binding.etEmail.text.toString()
+            etCity = binding.etCity.text.toString()
+            etState = binding.etState.text.toString()
+            etPinCode = binding.etPinCode.text.toString()
+            etReferralCode = binding.etReferralCode.text.toString()
             Constant.MOBILE_NO = etMobileNumber
             if (etName.isEmpty() || etMobileNumber.isEmpty() || etCity.isEmpty() || etEmail.isEmpty() || etPinCode.isEmpty()) {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
@@ -69,29 +78,32 @@ class RegisterNowActivity : AppCompatActivity() {
                 return@setOnClickListener
             } else {
                 binding.progressBar.visibility = View.VISIBLE
-                selectedCityId?.let { it1 ->
-                    registrationStepOne(
-                        REGISTER_VIA,
-                        etName,
-                        etEmail,
-                        gender,
-                        it1,
-                        etState,
-                        etPinCode,
-                        etMobileNumber,
-                        API_KEY,
-                        Utility.getDeviceId(this),
-                        Utility.deviceType,
-                        Utility.deviceToken,
-                        Utility.deviceModelNumber,
-                        Utility.deviceSerialNumber,
-                        Utility.deviceBrand,
-                        APP_VERSION_NAME.toString(),
-                        0.0,
-                        0.0,
-                        "0"
-                    )
-                }
+                isCheckReferralId(etReferralCode, API_KEY)
+//
+//                selectedCityId?.let { it1 ->
+//                    registrationStepOne(
+//                        REGISTER_VIA,
+//                        etName,
+//                        etEmail,
+//                        gender,
+//                        it1,
+//                        etState,
+//                        etPinCode,
+//                        etMobileNumber,
+//                        API_KEY,
+//                        Utility.getDeviceId(this),
+//                        Utility.deviceType,
+//                        Utility.deviceToken,
+//                        Utility.deviceModelNumber,
+//                        Utility.deviceSerialNumber,
+//                        Utility.deviceBrand,
+//                        APP_VERSION_NAME.toString(),
+//                        0.0,
+//                        0.0,
+//                        "0",
+//                        etReferralCode
+//                    )
+//                }
             }
         }
 
@@ -159,7 +171,8 @@ class RegisterNowActivity : AppCompatActivity() {
         appVersion: String,
         lat: Double,
         lng: Double,
-        appUserId: String
+        appUserId: String,
+        referralCode: String
     ) {
         val addCustomer = RegistrationData(
             registerVia,
@@ -180,7 +193,8 @@ class RegisterNowActivity : AppCompatActivity() {
             appVersion,
             lat,
             lng,
-            appUserId
+            appUserId,
+            referralCode
         )
 
         Log.i("TAG", "addCustomer: $addCustomer")
@@ -235,5 +249,69 @@ class RegisterNowActivity : AppCompatActivity() {
         })
     }
 
+    private fun isCheckReferralId(referralCode: String,
+                                       apiKey: String) {
+        val addUserDetails = ReferralRequest(referralCode, apiKey)
+        Log.i("TAG", "addCustomer: $addUserDetails")
+        val call = RetrofitClient.api.isCheckReferralId(addUserDetails)
+        call.enqueue(object : Callback<ReferralCodeResponse> {
+            override fun onResponse(
+                call: Call<ReferralCodeResponse>,
+                response: Response<ReferralCodeResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val updateProfileResponse = response.body()
+                    Log.i("TAG", "onResponse: " + response.body())
+                    updateProfileResponse?.let {
+                        if (etReferralCode.isEmpty() || it.status == 1) {
+                            selectedCityId?.let { it1 ->
+                                binding.progressBar.visibility = View.GONE
+
+                                registrationStepOne(
+                                    REGISTER_VIA,
+                                    etName,
+                                    etEmail,
+                                    gender,
+                                    it1,
+                                    etState,
+                                    etPinCode,
+                                    etMobileNumber,
+                                    API_KEY,
+                                    Utility.getDeviceId(applicationContext),
+                                    Utility.deviceType,
+                                    Utility.deviceToken,
+                                    Utility.deviceModelNumber,
+                                    Utility.deviceSerialNumber,
+                                    Utility.deviceBrand,
+                                    APP_VERSION_NAME.toString(),
+                                    0.0,
+                                    0.0,
+                                    "0",
+                                    etReferralCode
+                                )
+                            }
+
+                        } else {
+                            binding.progressBar.visibility = View.GONE
+                            Toast.makeText(
+                                applicationContext,
+                                "Invalid referral code. Please try again.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                } else {
+                    binding.progressBar.visibility = View.GONE
+                    Log.e("API", "API call failed with code ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<ReferralCodeResponse>, t: Throwable) {
+                binding.progressBar.visibility = View.GONE
+                Log.e("API", "API call failed with exception: ${t.message}")
+                Toast.makeText(applicationContext, t.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
 
 }

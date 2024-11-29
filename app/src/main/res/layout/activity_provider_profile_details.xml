@@ -179,6 +179,16 @@
                 app:layout_constraintLeft_toRightOf="@id/providerImage"
                 app:layout_constraintTop_toTopOf="@id/providerImage" />
 
+            <ImageView
+                android:id="@+id/btnWhatsapp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/whatsappicon"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/doctorName"
+                />
+
             <TextView
                 android:id="@+id/rateCount"
                 android:layout_width="wrap_content"

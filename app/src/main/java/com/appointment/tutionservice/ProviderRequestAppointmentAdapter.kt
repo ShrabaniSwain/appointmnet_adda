@@ -1,16 +1,22 @@
 package com.appointment.tutionservice
 
+import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.appointment.tutionservice.databinding.RequestAppointmentItemBinding
+import com.bumptech.glide.request.RequestOptions
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -39,7 +45,10 @@ class ProviderRequestAppointmentAdapter(val context: Context, val appointment: L
 
         fun bind(supportDetails : Appointment) {
             Utility.itemBackGround(itemView)
-            Glide.with(context).load(supportDetails.service_image ?: "").into(binding.imageView)
+            Glide.with(context).load(supportDetails.service_image ?: "")
+                .apply(
+                RequestOptions.placeholderOf(R.drawable.noimageavailbale))
+                .into(binding.imageView)
             binding.tvSpecialist.text = supportDetails.service_name
             binding.tvName.text = supportDetails.user_profile_name
             binding.tvEmail.text = supportDetails.user_email
@@ -47,6 +56,48 @@ class ProviderRequestAppointmentAdapter(val context: Context, val appointment: L
             binding.tvPhoneNo.text = supportDetails.user_mobile
             binding.tvPrice.text = supportDetails.customer_budget
             binding.ratingBar.visibility = View.GONE
+            if (!supportDetails.package_expiry){
+                binding.btnSubscribe.visibility = View.GONE
+                binding.tvEmail.text = "************"
+                binding.tvPhoneNo.text = "**********"
+                binding.btnCallNow.isClickable = false
+                binding.tvWhatsapp.isClickable = false
+                binding.tvWhatsapp.isEnabled = false
+                binding.btnCallNow.isEnabled = false
+                itemView.setOnClickListener {
+                    val dialogBuilder = AlertDialog.Builder(context)
+                    val inflater =
+                        LayoutInflater.from(context).inflate(R.layout.subscription_message_dialog, null)
+                    dialogBuilder.setView(inflater)
+                    val close = inflater.findViewById<ImageView>(R.id.ivClose)
+                    val btn = inflater.findViewById<TextView>(R.id.btnPay)
+                    val dialog = dialogBuilder.create()
+                    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                    close.setOnClickListener {
+                        dialog.dismiss()
+                    }
+
+                    btn.setOnClickListener {
+                        val intent = Intent(context, UpdatePackageActivity::class.java)
+                        itemView.context.startActivity(intent)
+                        dialog.dismiss()
+                    }
+
+                    dialog.show()
+
+                }
+            }
+            else{
+                binding.btnSubscribe.visibility = View.GONE
+                binding.btnCallNow.isClickable = true
+                binding.tvWhatsapp.isClickable = true
+                binding.tvWhatsapp.isEnabled = true
+                binding.btnCallNow.isEnabled = true
+            }
+            binding.btnSubscribe.setOnClickListener {
+                val intent = Intent(context, UpdatePackageActivity::class.java)
+                itemView.context.startActivity(intent)
+            }
             val statusNumber = supportDetails.job_post_status
             val status = when (statusNumber) {
                 "1" -> "Active"

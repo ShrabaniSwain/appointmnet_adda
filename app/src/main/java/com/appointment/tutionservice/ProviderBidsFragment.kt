@@ -44,11 +44,16 @@ class ProviderBidsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        showProgressBar()
-        updateStartDateField()
-        updateENdDateField()
+        if (Utility.isInternetAvailable(requireContext())) {
+            showProgressBar()
+            updateStartDateField()
+            updateENdDateField()
 
-        getCustomerJobListing()
+            getCustomerJobListing()
+        }
+        else {
+            Toast.makeText(requireContext(), "No internet connection", Toast.LENGTH_SHORT).show()
+        }
 
         binding.etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -171,17 +176,23 @@ class ProviderBidsFragment : Fragment() {
             override fun onResponse(call: Call<BookingApiResponse>, response: Response<BookingApiResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()?.status == 1) {
-                        hideProgressBar()
-                        val questionnaireResponse = response.body()
-                        enquiry = questionnaireResponse?.data?.job_bid_listing ?: emptyList()
+                        if (isAdded) {
+                            hideProgressBar()
+                            val questionnaireResponse = response.body()
+                            enquiry = questionnaireResponse?.data?.job_bid_listing ?: emptyList()
 
-                        bidsAdapter  = BidsAdapter(requireContext(), filteredEnquiry)
-                        binding.rvBidsList.layoutManager =
-                            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                        binding.rvBidsList.adapter = bidsAdapter
-                        filterLists()
-                        if (filteredEnquiry.isEmpty()){
-                            binding.tvNoData.visibility = View.VISIBLE
+                            bidsAdapter = BidsAdapter(requireContext(), filteredEnquiry)
+                            binding.rvBidsList.layoutManager =
+                                LinearLayoutManager(
+                                    requireContext(),
+                                    LinearLayoutManager.VERTICAL,
+                                    false
+                                )
+                            binding.rvBidsList.adapter = bidsAdapter
+                            filterLists()
+                            if (filteredEnquiry.isEmpty()) {
+                                binding.tvNoData.visibility = View.VISIBLE
+                            }
                         }
                         Log.i("TAG", "getServiceNameByType: ${response.body()}")
                     }
@@ -202,16 +213,20 @@ class ProviderBidsFragment : Fragment() {
     }
 
     private fun showProgressBar() {
-        binding.progressBar.visibility = View.VISIBLE
-        requireActivity().window.setFlags(
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-        )
+        if (isAdded) {
+            binding.progressBar.visibility = View.VISIBLE
+            requireActivity().window.setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            )
+        }
     }
 
     private fun hideProgressBar() {
-        binding.progressBar.visibility = View.GONE
-        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        if (isAdded) {
+            binding.progressBar.visibility = View.GONE
+            requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        }
     }
 
 }

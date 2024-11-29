@@ -55,6 +55,7 @@ class CustomerRequestsFragment : Fragment() {
 
         updateButtonColors(true)
 
+        if (isAdded) {
         binding.etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
@@ -77,7 +78,7 @@ class CustomerRequestsFragment : Fragment() {
             }
 
             override fun afterTextChanged(p0: Editable?) {}
-        })
+        })}
 
         binding.btnAppointment.setOnClickListener {
             search = "Appointment"
@@ -153,27 +154,30 @@ class CustomerRequestsFragment : Fragment() {
         filterLists()
     }
     private fun filterLists(searchText: String = "") {
-        requestAppointmentAdapter = RequestAppointmentAdapter(requireContext(), filteredAppointment)
-        binding.rvServiceAppointment.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.rvServiceAppointment.adapter = requestAppointmentAdapter
+        if (isAdded) {
+            requestAppointmentAdapter =
+                RequestAppointmentAdapter(requireContext(), filteredAppointment)
+            binding.rvServiceAppointment.layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            binding.rvServiceAppointment.adapter = requestAppointmentAdapter
 
-        requestEnquiryAdapter = RequestEnquiryAdapter(requireContext(), filteredEnquiry)
-        binding.rvService.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.rvService.adapter = requestEnquiryAdapter
+            requestEnquiryAdapter = RequestEnquiryAdapter(requireContext(), filteredEnquiry)
+            binding.rvService.layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            binding.rvService.adapter = requestEnquiryAdapter
 
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        filteredEnquiry = enquiry.filter {
-            it.service_name.contains(searchText, ignoreCase = true) &&
-                    isWithinDateRange(sdf.parse(it.doc))
+            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            filteredEnquiry = enquiry.filter {
+                it.service_name.contains(searchText, ignoreCase = true) &&
+                        isWithinDateRange(sdf.parse(it.doc))
+            }
+            filteredAppointment = appointment.filter {
+                it.service_name.contains(searchText, ignoreCase = true) &&
+                        isWithinDateRange(sdf.parse(it.doc))
+            }
+            requestEnquiryAdapter.updateListEnquiry(filteredEnquiry)
+            requestAppointmentAdapter.updateListAppointmnet(filteredAppointment)
         }
-        filteredAppointment = appointment.filter {
-            it.service_name.contains(searchText, ignoreCase = true) &&
-                    isWithinDateRange(sdf.parse(it.doc))
-        }
-        requestEnquiryAdapter.updateListEnquiry(filteredEnquiry)
-        requestAppointmentAdapter.updateListAppointmnet(filteredAppointment)
     }
 
 
@@ -230,16 +234,20 @@ class CustomerRequestsFragment : Fragment() {
     }
 
     private fun showProgressBar() {
-        binding.progressBar.visibility = View.VISIBLE
-        requireActivity().window.setFlags(
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-        )
+        if (isAdded) {
+            binding.progressBar.visibility = View.VISIBLE
+            requireActivity().window.setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            )
+        }
     }
 
     private fun hideProgressBar() {
-        binding.progressBar.visibility = View.GONE
-        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        if (isAdded) {
+            binding.progressBar.visibility = View.GONE
+            requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        }
     }
 
     private fun getCustomerJobListing() {
@@ -258,28 +266,41 @@ class CustomerRequestsFragment : Fragment() {
             override fun onResponse(call: Call<BookingApiResponse>, response: Response<BookingApiResponse>) {
                 if (response.isSuccessful) {
                     if (response.body()?.status == 1) {
-                        hideProgressBar()
-                        val questionnaireResponse = response.body()
-                        appointment = questionnaireResponse?.data?.appointment_list ?: emptyList()
-                        enquiry = questionnaireResponse?.data?.customer_enquiry_list ?: emptyList()
-                        filterLists()
-                        if (filteredEnquiry.isEmpty()){
-                            binding.tvNoData.visibility = View.VISIBLE
-                        }else{
-                            binding.tvNoData.visibility = View.GONE
+                        if (isAdded) {
+                            hideProgressBar()
+                            val questionnaireResponse = response.body()
+                            appointment =
+                                questionnaireResponse?.data?.appointment_list ?: emptyList()
+                            enquiry =
+                                questionnaireResponse?.data?.customer_enquiry_list ?: emptyList()
+                            filterLists()
+                            if (filteredEnquiry.isEmpty()) {
+                                binding.tvNoData.visibility = View.VISIBLE
+                            } else {
+                                binding.tvNoData.visibility = View.GONE
 
+                            }
+                            requestAppointmentAdapter =
+                                RequestAppointmentAdapter(requireContext(), filteredAppointment)
+                            binding.rvServiceAppointment.layoutManager =
+                                LinearLayoutManager(
+                                    requireContext(),
+                                    LinearLayoutManager.VERTICAL,
+                                    false
+                                )
+                            binding.rvServiceAppointment.adapter = requestAppointmentAdapter
+
+
+                            requestEnquiryAdapter =
+                                RequestEnquiryAdapter(requireContext(), filteredEnquiry)
+                            binding.rvService.layoutManager =
+                                LinearLayoutManager(
+                                    requireContext(),
+                                    LinearLayoutManager.VERTICAL,
+                                    false
+                                )
+                            binding.rvService.adapter = requestEnquiryAdapter
                         }
-                        requestAppointmentAdapter = RequestAppointmentAdapter(requireContext(), filteredAppointment)
-                        binding.rvServiceAppointment.layoutManager =
-                            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                        binding.rvServiceAppointment.adapter = requestAppointmentAdapter
-
-
-                        requestEnquiryAdapter = RequestEnquiryAdapter(requireContext(), filteredEnquiry)
-                        binding.rvService.layoutManager =
-                            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                        binding.rvService.adapter = requestEnquiryAdapter
-
                         Log.i("TAG", "getServiceNameByType: ${response.body()}")
                     }
                 } else {

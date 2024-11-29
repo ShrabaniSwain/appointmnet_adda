@@ -59,9 +59,18 @@ class CustomerMessagesFragment : Fragment() {
                         binding.pullToRefresh.isRefreshing = false
                         val business = response.body()
                         message = business?.data?.appUserMessages ?: emptyList()
-                        messageAdapter = MessageAdapter(requireContext(), message)
-                        binding.rvMessage.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                        binding.rvMessage.adapter = messageAdapter
+                        if (message.isEmpty()){
+                            binding.tvNoData.visibility = View.VISIBLE
+                        }
+                        else {
+                            messageAdapter = MessageAdapter(requireContext(), message)
+                            binding.rvMessage.layoutManager = LinearLayoutManager(
+                                requireContext(),
+                                LinearLayoutManager.VERTICAL,
+                                false
+                            )
+                            binding.rvMessage.adapter = messageAdapter
+                        }
 
                         Log.i("TAG", "getServiceNameByType: ${response.body()}")
                     }
@@ -82,15 +91,22 @@ class CustomerMessagesFragment : Fragment() {
     }
 
     private fun showProgressBar() {
-        binding.progressBar.visibility = View.VISIBLE
-        requireActivity().window.setFlags(
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-        )
+        if (isAdded) {
+            binding.progressBar.visibility = View.VISIBLE
+            requireActivity().window.setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            )
+        }
     }
 
     private fun hideProgressBar() {
-        binding.progressBar.visibility = View.GONE
-        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        if (isAdded) {
+            if (isAdded && activity != null) {
+                binding.progressBar.visibility = View.GONE
+                requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            }
+        }
     }
+
 }

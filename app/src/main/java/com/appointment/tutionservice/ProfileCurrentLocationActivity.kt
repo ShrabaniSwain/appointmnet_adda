@@ -118,6 +118,7 @@ class ProfileCurrentLocationActivity : AppCompatActivity() {
         call.enqueue(object : Callback<ProviderAddressResponse> {
             override fun onResponse(call: Call<ProviderAddressResponse>, response: Response<ProviderAddressResponse>) {
                 if (response.isSuccessful) {
+                    Log.i("TAG", "onResponse: " + response)
                     val updateProfileResponse = response.body()
                     Log.i("TAG", "onResponse: " + response.body())
                     updateProfileResponse?.let {
@@ -266,6 +267,7 @@ class ProfileCurrentLocationActivity : AppCompatActivity() {
         call.enqueue(object : Callback<GetLocationResponse> {
             override fun onResponse(call: Call<GetLocationResponse>, response: Response<GetLocationResponse>) {
                 if (response.isSuccessful) {
+                    Log.i("TAG", "onResponse: " + response)
                     appAddressId = response.body()?.data?.appUserAddresses?.get(0)?.appAddressId.toString()
                     binding.progressBar.visibility = View.GONE
 

@@ -94,6 +94,37 @@
         app:drawableTint="#6EB53B" />
 
     <TextView
+        android:id="@+id/tvPreferredLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Preferred Location"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintTop_toBottomOf="@id/tvTime"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvLocationType"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toBottomOf="@id/tvPreferredLocation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:hint="Select"
+        android:gravity="start|center"
+        android:background="@drawable/otp_box_background"
+        android:drawableTint="@color/color_primary"
+        android:drawableEnd="@drawable/baseline_keyboard_arrow_down_24"
+        android:padding="10dp" />
+
+    <TextView
         android:id="@+id/tvRequirements"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -103,7 +134,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="16dp"
         android:layout_marginStart="10dp"
-        app:layout_constraintTop_toBottomOf="@id/tvTime"
+        app:layout_constraintTop_toBottomOf="@id/tvLocationType"
         android:textStyle="bold"/>
 
     <EditText

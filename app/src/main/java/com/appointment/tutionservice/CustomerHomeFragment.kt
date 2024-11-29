@@ -1,6 +1,10 @@
 package com.appointment.tutionservice
 
+import android.Manifest
+import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -12,6 +16,7 @@ import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,6 +54,7 @@ class CustomerHomeFragment : Fragment() {
     private lateinit var bannersSmall: List<Banner>
     private lateinit var businessList: List<BusinessService>
     private lateinit var instantService: List<InstantService>
+    private val NOTIFICATION_PERMISSION_CODE = 1001
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,6 +68,7 @@ class CustomerHomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        askNotificationPermission()
         binding.tvViewAll.setOnClickListener {
             val intent = Intent(requireContext(), ViewAllActivity::class.java)
             startActivity(intent)
@@ -80,6 +87,41 @@ class CustomerHomeFragment : Fragment() {
         }
     }
 
+    private fun askNotificationPermission() {
+        // Only request permission if the API level is 33 or higher (Android 13+)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // Check if the permission is already granted
+            if (ContextCompat.checkSelfPermission(           requireContext(), Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                // Request the permission
+                ActivityCompat.requestPermissions(
+                    requireContext() as Activity,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    NOTIFICATION_PERMISSION_CODE
+                )
+            }
+        }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == NOTIFICATION_PERMISSION_CODE) {
+            // Check if permission was granted
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted
+            } else {
+
+                Log.i("TAG", "onRequestPermissionsResult: " + "permission")
+            }
+        }
+    }
     private fun fetchBannerData() {
         showProgressBar()
         val call = RetrofitClient.api.getBanner(
@@ -95,6 +137,7 @@ class CustomerHomeFragment : Fragment() {
         call.enqueue(object : Callback<ApiResponse> {
             override fun onResponse(call: Call< ApiResponse>, response: Response<ApiResponse>) {
                 if (response.isSuccessful) {
+                    if (isAdded) {
                     hideProgressBar()
                     binding.serviceBox.visibility = View.VISIBLE
                     binding.tvOurServices.visibility = View.VISIBLE
@@ -111,7 +154,8 @@ class CustomerHomeFragment : Fragment() {
                             when (index) {
                                 0 -> {
                                     binding.tvTeacher.text = service.service_name
-                                    Glide.with(requireContext()).load(service.service_img_path).into(binding.ivTeacherLogo)
+                                    Glide.with(requireContext()).load(service.service_img_path)
+                                        .into(binding.ivTeacherLogo)
                                     binding.teacherCardView.setOnClickListener {
                                         Constant.CAT_TYPE = service.service_id
                                         Constant.SERVICE_CAT_TYPE = service.service_type
@@ -126,13 +170,16 @@ class CustomerHomeFragment : Fragment() {
                                             isTeacherCardExpanded
                                         )
                                         isTeacherCardExpanded = !isTeacherCardExpanded
-                                        val intent = Intent(requireContext(), TeacherActivity::class.java)
+                                        val intent =
+                                            Intent(requireContext(), TeacherActivity::class.java)
                                         startActivity(intent)
                                     }
                                 }
+
                                 1 -> {
                                     binding.tvDoctors.text = service.service_name
-                                    Glide.with(requireContext()).load(service.service_img_path).into(binding.ivMath)
+                                    Glide.with(requireContext()).load(service.service_img_path)
+                                        .into(binding.ivMath)
 
                                     binding.doctorsCard.setOnClickListener {
                                         Constant.CAT_TYPE = service.service_id
@@ -147,14 +194,17 @@ class CustomerHomeFragment : Fragment() {
                                             isDoctorsCardExpanded
                                         )
                                         isDoctorsCardExpanded = !isDoctorsCardExpanded
-                                        val intent = Intent(requireContext(), TeacherActivity::class.java)
+                                        val intent =
+                                            Intent(requireContext(), TeacherActivity::class.java)
                                         startActivity(intent)
                                     }
 
                                 }
+
                                 2 -> {
                                     binding.tvMechanic.text = service.service_name
-                                    Glide.with(requireContext()).load(service.service_img_path).into(binding.ivMechanic)
+                                    Glide.with(requireContext()).load(service.service_img_path)
+                                        .into(binding.ivMechanic)
                                     binding.mechanicCard.setOnClickListener {
                                         Constant.CAT_TYPE = service.service_id
                                         Constant.JOBTITLE = service.service_name
@@ -168,13 +218,16 @@ class CustomerHomeFragment : Fragment() {
                                             isMechanicCardExpanded
                                         )
                                         isMechanicCardExpanded = !isMechanicCardExpanded
-                                        val intent = Intent(requireContext(), TeacherActivity::class.java)
+                                        val intent =
+                                            Intent(requireContext(), TeacherActivity::class.java)
                                         startActivity(intent)
                                     }
                                 }
+
                                 3 -> {
                                     binding.tvPrinting.text = service.service_name
-                                    Glide.with(requireContext()).load(service.service_img_path).into(binding.ivPrinting)
+                                    Glide.with(requireContext()).load(service.service_img_path)
+                                        .into(binding.ivPrinting)
                                     binding.printingCard.setOnClickListener {
                                         Constant.CAT_TYPE = service.service_id
                                         Constant.JOBTITLE = service.service_name
@@ -188,13 +241,16 @@ class CustomerHomeFragment : Fragment() {
                                             isPrintingCardExpanded
                                         )
                                         isPrintingCardExpanded = !isPrintingCardExpanded
-                                        val intent = Intent(requireContext(), TeacherActivity::class.java)
+                                        val intent =
+                                            Intent(requireContext(), TeacherActivity::class.java)
                                         startActivity(intent)
                                     }
                                 }
+
                                 4 -> {
                                     binding.tvSecurity.text = service.service_name
-                                    Glide.with(requireContext()).load(service.service_img_path).into(binding.ivSecurityLogo)
+                                    Glide.with(requireContext()).load(service.service_img_path)
+                                        .into(binding.ivSecurityLogo)
                                     binding.securityCardView.setOnClickListener {
                                         Constant.CAT_TYPE = service.service_id
                                         Constant.JOBTITLE = service.service_name
@@ -208,13 +264,16 @@ class CustomerHomeFragment : Fragment() {
                                             isSecurityCardExpanded
                                         )
                                         isSecurityCardExpanded = !isSecurityCardExpanded
-                                        val intent = Intent(requireContext(), TeacherActivity::class.java)
+                                        val intent =
+                                            Intent(requireContext(), TeacherActivity::class.java)
                                         startActivity(intent)
                                     }
                                 }
+
                                 5 -> {
                                     binding.tvBusiness.text = service.service_name
-                                    Glide.with(requireContext()).load(service.service_img_path).into(binding.ivBusiness)
+                                    Glide.with(requireContext()).load(service.service_img_path)
+                                        .into(binding.ivBusiness)
                                     binding.businessCard.setOnClickListener {
                                         Constant.CAT_TYPE = service.service_id
                                         Constant.JOBTITLE = service.service_name
@@ -228,13 +287,16 @@ class CustomerHomeFragment : Fragment() {
                                             isBusinessCardExpanded
                                         )
                                         isBusinessCardExpanded = !isBusinessCardExpanded
-                                        val intent = Intent(requireContext(), TeacherActivity::class.java)
+                                        val intent =
+                                            Intent(requireContext(), TeacherActivity::class.java)
                                         startActivity(intent)
                                     }
                                 }
+
                                 6 -> {
                                     binding.tvArt.text = service.service_name
-                                    Glide.with(requireContext()).load(service.service_img_path).into(binding.ivArt)
+                                    Glide.with(requireContext()).load(service.service_img_path)
+                                        .into(binding.ivArt)
                                     binding.artCard.setOnClickListener {
                                         Constant.CAT_TYPE = service.service_id
                                         Constant.JOBTITLE = service.service_name
@@ -248,7 +310,8 @@ class CustomerHomeFragment : Fragment() {
                                             isArtCraftCardExpanded
                                         )
                                         isArtCraftCardExpanded = !isArtCraftCardExpanded
-                                        val intent = Intent(requireContext(), TeacherActivity::class.java)
+                                        val intent =
+                                            Intent(requireContext(), TeacherActivity::class.java)
                                         startActivity(intent)
                                     }
                                 }
@@ -257,21 +320,32 @@ class CustomerHomeFragment : Fragment() {
                     }
 
                     val numFeaturedServices = response.body()?.data?.featuredServices?.size ?: 0
-                    val viewsToHide = listOf(binding.teacherCardView, binding.doctorsCard, binding.mechanicCard, binding.printingCard, binding.securityCardView, binding.businessCard, binding.artCard)
+                    val viewsToHide = listOf(
+                        binding.teacherCardView,
+                        binding.doctorsCard,
+                        binding.mechanicCard,
+                        binding.printingCard,
+                        binding.securityCardView,
+                        binding.businessCard,
+                        binding.artCard
+                    )
                     for (i in numFeaturedServices until viewsToHide.size) {
                         viewsToHide[i].visibility = View.GONE
                     }
 
-                    binding.moreTeacherCard.visibility = if (binding.artCard.visibility == View.VISIBLE) View.VISIBLE else View.GONE
+                    binding.moreTeacherCard.visibility =
+                        if (binding.artCard.visibility == View.VISIBLE) View.VISIBLE else View.GONE
 
 
                     val guardianBanner = CustomerBanner(requireContext(), banners)
-                    binding.rvBanner.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                    binding.rvBanner.layoutManager =
+                        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                     binding.rvBanner.adapter = guardianBanner
                     guardianBanner.notifyDataSetChanged()
 
                     val guardianBannerSmall = CustomerBanner(requireContext(), bannersSmall)
-                    binding.rvBanner1.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                    binding.rvBanner1.layoutManager =
+                        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                     binding.rvBanner1.adapter = guardianBannerSmall
                     guardianBannerSmall.notifyDataSetChanged()
 
@@ -279,12 +353,15 @@ class CustomerHomeFragment : Fragment() {
 
                     val enquiryAdapter = EnquiryAdapter(requireContext(), businessList)
                     binding.rvEnquiryList.adapter = enquiryAdapter
-                    binding.rvEnquiryList.layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
+                    binding.rvEnquiryList.layoutManager =
+                        GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
 
-                    val customerServiceAdapter = CustomerServiceAdapter(requireContext(), instantService)
-                    binding.rvServiceList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                    val customerServiceAdapter =
+                        CustomerServiceAdapter(requireContext(), instantService)
+                    binding.rvServiceList.layoutManager =
+                        LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
                     binding.rvServiceList.adapter = customerServiceAdapter
-
+                }
                     Log.i("TAG", "bannerImage: ${response.body()}")
                 } else {
                     hideProgressBar()
@@ -408,15 +485,19 @@ class CustomerHomeFragment : Fragment() {
     }
 
     private fun showProgressBar() {
-        binding.progressBar.visibility = View.VISIBLE
-        requireActivity().window.setFlags(
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-        )
+        if (isAdded) {
+            binding.progressBar.visibility = View.VISIBLE
+            requireActivity().window.setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            )
+        }
     }
 
     private fun hideProgressBar() {
-        binding.progressBar.visibility = View.GONE
-        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        if (isAdded) {
+            binding.progressBar.visibility = View.GONE
+            requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        }
     }
 }

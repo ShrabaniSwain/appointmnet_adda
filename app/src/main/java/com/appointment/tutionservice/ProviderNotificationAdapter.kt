@@ -1,5 +1,7 @@
 package com.appointment.tutionservice
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +10,7 @@ import com.appointment.tutionservice.databinding.CustomerNotificationItemListBin
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class ProviderNotificationAdapter(val notification: List<Notification>) : RecyclerView.Adapter<ProviderNotificationAdapter.CardViewHolder>() {
+class ProviderNotificationAdapter(val notification: List<Notification>, val context: Context) : RecyclerView.Adapter<ProviderNotificationAdapter.CardViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.customer_notification_item_list, parent, false)
@@ -29,6 +31,13 @@ class ProviderNotificationAdapter(val notification: List<Notification>) : Recycl
 
         fun bind(notificationText: Notification) {
             Utility.itemBackGround(itemView)
+            itemView.setOnClickListener {
+                Constant.NOTIFICATION_DETAILS = notificationText.notificationMessage
+                Constant.NOTIFICATION_IMAGE = notificationText.pushImageUrl
+                Constant.ADDITIONAL_DATA = notificationText.additionalData
+                val intent = Intent(context, NotificationDetailsActivity::class.java)
+                itemView.context.startActivity(intent)
+            }
             binding.tvNotificationdetails.text = notificationText.notificationMessage
             binding.tvPaymentReminder.text = notificationText.notificationTitle
             val dateStr = notificationText.date

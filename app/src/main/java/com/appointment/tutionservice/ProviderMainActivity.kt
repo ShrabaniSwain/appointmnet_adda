@@ -1,16 +1,27 @@
 package com.appointment.tutionservice
 
+import android.Manifest.permission.POST_NOTIFICATIONS
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.media.MediaPlayer
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.appointment.tutionservice.databinding.ActivityProviderMainBinding
 import com.razorpay.PaymentResultListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.concurrent.TimeUnit
 
 class ProviderMainActivity : AppCompatActivity() , PaymentResultListener{
 
@@ -25,6 +36,14 @@ class ProviderMainActivity : AppCompatActivity() , PaymentResultListener{
         super.onCreate(savedInstanceState)
         binding = ActivityProviderMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+//        val intent = Intent(this, ApiService::class.java)
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            startForegroundService(intent)
+//        } else {
+//            startService(intent)
+//        }
+
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
@@ -46,8 +65,6 @@ class ProviderMainActivity : AppCompatActivity() , PaymentResultListener{
             .replace(R.id.container, homeFragment)
             .commit()
     }
-
-
     private fun updateProfileVerification(profileVerifyPaymentRequest: ProfileVerifyPaymentRequest) {
         val call = RetrofitClient.api.updateProfileVerification(profileVerifyPaymentRequest)
         call.enqueue(object : Callback<UpdateProfileResponse> {
@@ -96,6 +113,13 @@ class ProviderMainActivity : AppCompatActivity() , PaymentResultListener{
     override fun onPaymentError(p0: Int, p1: String?) {
         Toast.makeText(applicationContext, "Payment Failed due to error", Toast.LENGTH_SHORT)
             .show()
+    }
+
+    override fun onDestroy() {
+        // Stop the service when the activity is destroyed, if needed
+//        val intent = Intent(this, ApiService::class.java)
+//        stopService(intent)
+        super.onDestroy()
     }
 
 }

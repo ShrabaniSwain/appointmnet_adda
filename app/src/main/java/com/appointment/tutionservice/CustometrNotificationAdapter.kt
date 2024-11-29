@@ -1,14 +1,18 @@
 package com.appointment.tutionservice
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.appointment.tutionservice.Constant.NOTIFICATION_DETAILS
+import com.appointment.tutionservice.Constant.NOTIFICATION_IMAGE
 import com.appointment.tutionservice.databinding.CustomerNotificationItemListBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class CustometrNotificationAdapter(private val notification: List<Notification>) : RecyclerView.Adapter<CustometrNotificationAdapter.CardViewHolder>() {
+class CustometrNotificationAdapter(private val notification: List<Notification>, val context: Context) : RecyclerView.Adapter<CustometrNotificationAdapter.CardViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
@@ -30,6 +34,14 @@ class CustometrNotificationAdapter(private val notification: List<Notification>)
 
         fun bind(notificationText: Notification) {
             Utility.itemBackGround(itemView)
+            itemView.setOnClickListener {
+                NOTIFICATION_DETAILS = notificationText.notificationMessage
+                NOTIFICATION_IMAGE = notificationText.pushImageUrl
+                Constant.ADDITIONAL_DATA = notificationText.additionalData
+
+                val intent = Intent(context, NotificationDetailsActivity::class.java)
+                itemView.context.startActivity(intent)
+            }
             binding.tvNotificationdetails.text = notificationText.notificationMessage
             binding.tvPaymentReminder.text = notificationText.notificationTitle
             val dateStr = notificationText.date

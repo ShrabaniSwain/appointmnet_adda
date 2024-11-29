@@ -2,6 +2,7 @@ package com.appointment.tutionservice
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,12 +40,22 @@ class ProviderNotificationActivity : AppCompatActivity() {
 
         call.enqueue(object : Callback<NotificationResponse> {
             override fun onResponse(call: Call<NotificationResponse>, response: Response<NotificationResponse>) {
+                Log.i("TAG", "onResponse: " + response)
                 if (response.isSuccessful) {
                     notification = response.body()?.data?.notifications ?: emptyList()
 
-                    val adapter = ProviderNotificationAdapter(notification)
-                    binding.rvNotification.adapter = adapter
-                    binding.rvNotification.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
+                    if (notification.isEmpty()){
+                        binding.tvNoData.visibility = View.VISIBLE
+                    }
+                    else {
+                        val adapter = ProviderNotificationAdapter(notification, applicationContext)
+                        binding.rvNotification.adapter = adapter
+                        binding.rvNotification.layoutManager = LinearLayoutManager(
+                            applicationContext,
+                            LinearLayoutManager.VERTICAL,
+                            false
+                        )
+                    }
 
                     Log.i("TAG", "bannerImage: ${response.body()}")
                 } else {

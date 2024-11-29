@@ -1,7 +1,9 @@
 package com.appointment.tutionservice
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -64,6 +66,9 @@ class CrmProviderAdapter(
         return selectedItems.map { it.mobile }
     }
 
+    fun getSelectedUserId(): List<String> {
+        return selectedItems.map { it.id }
+    }
     inner class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding = CrmItemListBinding.bind(itemView)
 
@@ -73,6 +78,25 @@ class CrmProviderAdapter(
             binding.tvLocation.text = crmList.address
             binding.tvEmail.text = crmList.email
             binding.tvPhoneNo.text = crmList.mobile
+
+            binding.btnCall.setOnClickListener {
+                val phoneNumber = crmList.mobile
+                val dialIntent = Intent(Intent.ACTION_DIAL)
+                dialIntent.data = Uri.parse("tel:$phoneNumber")
+                context.startActivity(dialIntent)
+            }
+
+            binding.btnWhatsapp.setOnClickListener {
+                val phoneNumber = crmList.mobile
+                val url = "https://api.whatsapp.com/send?phone=$phoneNumber"
+                try {
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.data = Uri.parse(url)
+                    context.startActivity(intent)
+                } catch (e: ActivityNotFoundException) {
+                    Toast.makeText(context, "WhatsApp is not installed", Toast.LENGTH_SHORT).show()
+                }
+            }
 
             binding.ivDelete.setOnClickListener {
                 val builder = AlertDialog.Builder(context)

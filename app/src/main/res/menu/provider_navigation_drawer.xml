@@ -48,6 +48,14 @@
             android:icon="@drawable/baseline_playlist_add_24"/>
     </group>
 
+    <group android:id="@+id/group11"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_tutotial"
+            android:title="Tutorial"
+            app:actionLayout="@layout/menu_item_with_line"
+            android:icon="@drawable/baseline_missed_video_call_24"/>
+    </group>
 
     <group android:id="@+id/group9"
         android:checkableBehavior="single">

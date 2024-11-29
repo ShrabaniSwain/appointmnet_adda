@@ -1,11 +1,16 @@
 package com.appointment.tutionservice
 
 import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.media.AudioAttributes
+import android.net.Uri
+import android.os.Build
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -35,91 +40,70 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(p0: RemoteMessage) {
         super.onMessageReceived(p0)
-        showNotification(p0.data["title"], p0.data["message"])
-        Log.i(TAG, "onMessageReceived: " )
+        showNotification(p0.notification?.title, p0.notification?.body)
+        Log.i(TAG, "onMessageReceived: "+ (p0.notification?.body ?: "empty "))
 
         if (p0.data.isNotEmpty()) {
             Log.i(TAG, "Notification => ${p0.notification?.body}")
-//            showNotification(p0.)
-//            val btType = p0.data.getValue(BT_TYPE).toInt()
-//
-//            DevLogs.d(TAG, "Message data payload: ${p0.data}")
-//
-//            LATITUDE = p0.data["latitude"]?.toDouble() ?: 0.0
-//            LONGITUDE = p0.data["longitude"]?.toDouble() ?: 0.0
-//            DATETIME = p0.data["dateTime"]?.toLong() ?: 0L
-//            SERVERDATETIME = p0.data["serverDateTime"]?.toLong() ?: 0L
-//            ISLOCATIONPERMISSIONENABLED = p0.data["isLocationPermissionEnabled"]?.toBoolean() ?: false
-//
-//            if (btType != BT_TYPE_LOCATION) {
-//                if (btType == BT_TYPE_LOGOUT) {
-//                    Utility.logoutAndNavigateToSignIn(this)
-//                }
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                    val channel = NotificationChannel(
-//                        "MyNotification", "AlertNotification",
-//                        NotificationManager.IMPORTANCE_HIGH
-//                    )
-//                    val manager =
-//                        getSystemService(NotificationManager::class.java) as NotificationManager
-//                    manager.createNotificationChannel(channel)
-//                }
-//                //updateAlertsData()
-//                saveAlertIntoLocalDB(p0.data)
-//
-//            }
         }
     }
 
 
     private fun showNotification(title: String?, desc: String?) {
+        Log.i(TAG, "showNotification: " + "showNotification")
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        val intent = Intent(this, SplashActivity::class.java)
+        val channelId = "YOUR_CHANNEL_ID"
+        val channelName = "YOUR_CHANNEL_NAME"
+        val soundUri = Uri.parse("android.resource://${applicationContext.packageName}/${R.raw.custom_notification_mp3}")
 
-        val pendingIntent: PendingIntent
-//
-//        if (application.getSharedPreferences("notification", MODE_PRIVATE)
-//                .getBoolean(Constants, false)
-//        ) {
-//            pendingIntent = NavDeepLinkBuilder(this)
-////                .setComponentName(DashBoardActivity::class.java)
-//                .setGraph(R.navigation.nav_graph)
-//                .setDestination(R.id.alerts)
-//                .setArguments(bundle)
-//                .createPendingIntent()
-//            application.getSharedPreferences(Constants.SHARED_PREFERENCE_FILE_NAME, MODE_PRIVATE).edit().putBoolean(AppConstant.IS_NOTIFICATIONS, true).apply()
-//        } else {
-//            pendingIntent = PendingIntent.getActivity(
-//                applicationContext,
-//                System.currentTimeMillis().toInt(),
-//                intent,
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-//                } else {
-//                    PendingIntent.FLAG_UPDATE_CURRENT
-//                }
-//            )
-//        }
+        val builder: NotificationCompat.Builder
 
-
-        //create notification builder
-        val builder = NotificationCompat.Builder(this, "MyNotification")
-            .setContentTitle("$title")
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentText(desc)
-//            .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
-        val manager = NotificationManagerCompat.from(this)
-        manager.apply {
-            if (ActivityCompat.checkSelfPermission(
-                    applicationContext,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                return
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // For Oreo and above, create a notification channel with custom sound
+            val notificationChannel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH).apply {
+                description = "Channel description"
+                enableLights(true)
+                enableVibration(true)
+                setSound(soundUri, AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build())
             }
-            notify(123, builder.build())
+
+            notificationManager.createNotificationChannel(notificationChannel)
+
+            builder = NotificationCompat.Builder(applicationContext, channelId)
+        } else {
+            builder = NotificationCompat.Builder(applicationContext)
+                .setSound(soundUri)
         }
+
+        // Set up intent for notification click action
+        val intent = if (Constant.current_app_user_type == "1") {
+            Intent(applicationContext, CustomerMainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+        } else {
+            Intent(applicationContext, ProviderMainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+        }
+
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(
+            applicationContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        // Build the notification
+        builder.setSmallIcon(R.mipmap.ic_launcher)
+            .setContentTitle(title ?: applicationContext.getString(R.string.app_name))
+            .setContentText(desc)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true).priority = NotificationCompat.PRIORITY_HIGH // High priority for visibility
+
+        // Show the notification
+        notificationManager.notify(123, builder.build()) // Use a unique notification ID
     }
+
 
 }

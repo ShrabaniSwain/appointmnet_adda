@@ -30,6 +30,7 @@ import java.util.Locale
 class EnquiryLastStepActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEnquiryLastStepBinding
     private var priority = ""
+    private var location = ""
     private val calendar: Calendar = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,11 +56,22 @@ class EnquiryLastStepActivity : AppCompatActivity() {
         binding.tvSelectType.setOnClickListener {
             showGenderOptionsDialog()
         }
+
+        binding.tvLocationType.setOnClickListener {
+            showLocationDialog()
+        }
         binding.btnSendEnquiry.setOnClickListener {
        if(priority.isEmpty()){
                 Toast.makeText(
                     this,
                     "Please select the job priority",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            else if(location.isEmpty()){
+                Toast.makeText(
+                    this,
+                    "Please select the preferred location",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -93,7 +105,8 @@ class EnquiryLastStepActivity : AppCompatActivity() {
                     APP_USER_KEY, "",
                     0.0,
                     0.0,
-                    0
+                    0,
+                    location
                 )
 
                 customerJobPost(jobPost)
@@ -125,6 +138,27 @@ class EnquiryLastStepActivity : AppCompatActivity() {
         val dialog = builder.create()
         dialog.show()
     }
+
+    private fun showLocationDialog() {
+        val locationOptions = arrayOf("My City", "My State", "All Over Country")
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Select Location")
+        builder.setItems(locationOptions) { _, which ->
+            val selectedLocation = locationOptions[which]
+            binding.tvLocationType.text = selectedLocation
+
+            location = when (selectedLocation) {
+                "My City" -> "1"
+                "My State" -> "2"
+                "All Over Country" -> "3"
+                else -> "1"
+            }
+        }
+
+        builder.show()
+    }
+
 
     private fun customerJobPost(job: JobPost) {
         showProgressBar()

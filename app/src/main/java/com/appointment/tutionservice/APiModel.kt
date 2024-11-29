@@ -41,13 +41,15 @@ data class RegistrationData(
     val app_version: String?,
     val lat: Double,
     val lng: Double,
-    val app_user_id: String
+    val app_user_id: String,
+    val referral_id: String,
 )
 
 data class LoginMobileNoModel(
     val user_mobile: String,
     val device_id: String,
-    val api_key: String
+    val api_key: String,
+    val fcm_token: String
 )
 
 data class OtpModel(
@@ -88,6 +90,7 @@ data class CompanyData(
 
 data class CompanyInfo(
     val site_url: String,
+    val app_video_tutorial: String,
     val company_name: String,
     val company_tag: String,
     val company_email: String,
@@ -103,9 +106,14 @@ data class CompanyInfo(
     val help_url: String,
     val i_am_a: String,
     val android_app_version: String,
+    val video_tutorial: List<VideoTutorial>,
     val privacy_policy: String,
     val term_condition: String,
     val all_citys: List<City>
+)
+
+data class VideoTutorial(
+    val files: String
 )
 
 data class City(
@@ -255,6 +263,7 @@ data class CustomerProfileApiData(
 data class CustomerProfile(
     @SerializedName("app_user_id") val appUserId: String?,
     @SerializedName("package_id") val packageId: String,
+    @SerializedName("referral_id") val referralId: String,
     @SerializedName("app_user_key") val appUserKey: String,
     @SerializedName("app_address_id") val appAddressId: String,
     @SerializedName("user_mobile") val userMobile: String,
@@ -301,6 +310,14 @@ data class UpdateProfileResponse(
     val status: Int,
     val data: List<Any>
 )
+
+data class MessageAPiResponse(
+    val msg: String,
+    val msg_title: String,
+    val status: Int,
+    val data: List<Any>
+)
+
 
 data class ProviderProfileResponse(
     @SerializedName("msg") val message: String,
@@ -403,12 +420,16 @@ data class AppUserData(
     val facebook_profile: String?,
     val tweeter_profile: String?,
     val gplus_profile: String?,
+    val referral_id: String?,
+    val charge_push_notification: String?,
+    val charge_whatsapp_sms: String?,
     val linkedin_profile: String?,
     val bank_info_id: String?,
     val ifsc_code: String?,
     val account_number: String?,
     val branch_name: String?,
     val bank_name: String?,
+    val total_wallet_amount: String?,
     val photo_gallery_list: List<String>,
     val location: List<Location>,
     val type: String,
@@ -452,6 +473,9 @@ data class DashboardProviderModel(
     val total_business: Int,
     @SerializedName("received_payments")
     val received_payments: Int,
+    val total_notification: String,
+    val total_bids: Int,
+    val reffered: Int,
     val appoinsments: List<AppointmentProvider>,
     val enquiry: List<Enquiry>
 )
@@ -844,7 +868,8 @@ data class JobPost(
     var paymentId: String,
     val lat: Double,
     val lng: Double,
-    val service_provider_id: Int
+    val service_provider_id: Int,
+    val preferred_location: String,
 )
 
 data class QuestionnaireAnswer(
@@ -866,6 +891,23 @@ data class BookingApiResponse(
     val data: BookingData
 )
 
+data class ReferralIdResponse(
+    val msg: String,
+    val status: Int,
+    val data: List<ReferralIdData>
+)
+
+data class ReferralIdData(
+    val subscription_name: String?,
+    val active_date: String?,
+    val expiry_date: String?,
+    val user_mobile: String?,
+    val user_email: String?,
+    val user_profile_name: String?,
+    val app_user_id: String?,
+    val profile_img_path: String
+)
+
 data class BookingData(
     val customer_enquiry_list: List<CustomerEnquiry>,
     val appointment_list: List<Appointment>,
@@ -874,6 +916,7 @@ data class BookingData(
 
 data class JobBidListing(
     val job_type: String,
+    val package_expiry: Boolean,
     val job_bits: List<JobBit>,
     val service_image: String,
     val job_post_id: String,
@@ -904,6 +947,7 @@ data class CustomerEnquiry(
     val user_mobile: String,
     val user_email: String,
     val user_profile_name: String,
+    val package_expiry: Boolean,
     val get_ques_ans: List<QuestionAnswer>,
     val job_bits: List<JobBit>,
     val service_image: String,
@@ -946,6 +990,7 @@ data class JobBit(
 
 data class Appointment(
     val job_type: String,
+    val package_expiry: Boolean,
     val customer_rating_id: String,
     val ratings: String,
     val user_mobile: String,
@@ -1104,6 +1149,7 @@ data class TodoListSendData(
     val id: String,
     val name: String,
     val details: String,
+    val date: String,
     val status: String,
     val job_status: String,
     val user_mobile: String,
@@ -1139,8 +1185,33 @@ data class TodoGetData(
     val status: String,
     val job_status: String,
     val doc: String,
+    val date: String,
     val docby: String,
     val dom: String?
+)
+
+data class WalletResponse(
+    val msg: String,
+    val status: String,
+    val data: List<Wallet>,
+    val total_amount: TotalAmount
+)
+
+data class Wallet(
+    val id: String,
+    val service_provider_id: String,
+    val type: String,
+    val amount: String,
+    val purpose: String,
+    val payment_deti: String,
+    val doc: String,
+    val dom: String?
+)
+
+data class TotalAmount(
+    val total_debit: String,
+    val total_credit: String,
+    val total: String
 )
 
 data class SearchBarResponse(
@@ -1197,6 +1268,7 @@ data class JobPostLog(
     val app_user_id: String,
     val user_profile_name: String,
     val doc: String,
+    val app_user_key: String,
     val profile_image: String?,
     val fields: String?,
     val remarks: String,
@@ -1317,7 +1389,10 @@ data class KeywordResponse(
 data class SmsRequest(
     val message: String,
     val user_name: String,
-    val user_mobile: List<String>,
+    val user_mobile: String,
+    val send_sms_mobile: String,
+    val user_id: String,
+    val type: String,
     val api_key: String,
     val device_id: String,
     val device_type: String,
@@ -1510,4 +1585,68 @@ data class ProfileVerifyPaymentRequest(
     val app_user_key: String,
     val lat: Double,
     val lng: Double
+)
+
+data class PaymentRequest(
+    val amount: String,
+    val payment_deti: List<String>,
+    val user_mobile: String,
+    val api_key: String,
+    val device_id: String,
+    val device_type: String,
+    val device_token: String,
+    val app_user_id: String,
+    val app_version: String,
+    val app_user_key: String,
+    val lat: Double,
+    val lng: Double
+)
+
+data class ReferralCodeResponse(
+    val msg: String,
+    val msg_title: String,
+    val status: Int,
+    val data: List<ReferralData>
+)
+
+data class ReferralData(
+    val app_user_id: String,
+    val user_profile_name: String
+)
+
+data class ReferralRequest(
+    val referral_id: String,
+    val api_key: String
+)
+
+data class AlertNotifyResponse(
+    val msg: String,
+    val status: String,
+    val data: List<NotificationModel>
+)
+
+data class NotificationModel(
+    val notification_id: String,
+    val notification_message: String,
+    val notification_title: String
+)
+
+data class UpdateNotificationResponse(
+    val msg: String,
+    val status: String,
+    val data: String
+)
+
+
+data class TutorialResponse(
+    val msg: String,
+    val status: String,
+    val data: List<TutorialData>
+)
+
+data class TutorialData(
+    val id: String,
+    val name: String,
+    val files: String,
+    val show: String
 )

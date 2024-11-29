@@ -14,6 +14,7 @@ import com.appointment.tutionservice.databinding.ItemTodoListBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -42,11 +43,27 @@ class TodoListAdapter(val context: Context, val todoList: List<TodoGetData>) : R
             binding.tvPriorityRatings.text = supportDetails.status
             binding.tvTaskdetails.text = supportDetails.details
             binding.tvPending.text = supportDetails.job_status
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-            val date = inputFormat.parse(supportDetails.doc)
-            val outputFormat = SimpleDateFormat("dd MMMM yyyy 'at' h:mm a", Locale.getDefault())
-            val formattedDate = date?.let { outputFormat.format(it) }
-            binding.tvDateTImeText.text = formattedDate
+            if (!supportDetails.date.isNullOrEmpty()){
+                binding.tvDateTImeText.text = supportDetails.date
+            }
+            else{
+                binding.tvDateTImeText.text = ""
+            }
+//            val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+//            supportDetails.date.let {
+//                try {
+//                    val date = inputFormat.parse(it)
+//                    val outputFormat = SimpleDateFormat("dd MMMM yyyy 'at' h:mm a", Locale.getDefault())
+//                    val formattedDate = outputFormat.format(date)
+//                    binding.tvDateTImeText.text = formattedDate
+//                } catch (e: ParseException) {
+//                    Log.e("TodoListAdapter", "Date parsing failed: ${e.message}")
+//                    binding.tvDateTImeText.text = ""
+//                }
+//            } ?: run {
+//                binding.tvDateTImeText.text = ""
+//            }
+
 
             val statusArray = arrayOf("Pending", "Complete")
 
@@ -61,7 +78,7 @@ class TodoListAdapter(val context: Context, val todoList: List<TodoGetData>) : R
                         binding.tvPending.text = selectedStatus
                         val status = when (selectedStatus) {
                             "Pending" -> "0"
-                            "Completed" -> "1"
+                            "Complete" -> "1"
                             else -> "0"
                         }
 

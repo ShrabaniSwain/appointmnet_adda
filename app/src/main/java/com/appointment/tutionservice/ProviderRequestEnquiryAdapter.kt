@@ -19,6 +19,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.appointment.tutionservice.databinding.RequestEnquiryItemListBinding
+import com.bumptech.glide.request.RequestOptions
+import com.razorpay.Checkout
+import org.json.JSONException
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,6 +31,7 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import java.util.Locale
+import kotlin.math.roundToInt
 
 
 class ProviderRequestEnquiryAdapter(val context: Context, val enquiry: List<CustomerEnquiry>) : RecyclerView.Adapter<ProviderRequestEnquiryAdapter.CardViewHolder>() {
@@ -54,16 +59,48 @@ class ProviderRequestEnquiryAdapter(val context: Context, val enquiry: List<Cust
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(supportDetails : CustomerEnquiry) {
             Utility.itemBackGround(itemView)
+
             binding.tvTitle.text = supportDetails.job_title
             binding.tvCategory.text = supportDetails.service_name
             binding.tvName.visibility = View.VISIBLE
             binding.tvName.text = supportDetails.user_profile_name
             binding.tvCategoryDeatils.text = supportDetails.job_description
+            if (!supportDetails.package_expiry){
+                binding.btnEnquiry.visibility= View.GONE
+                itemView.setOnClickListener {
+                    val dialogBuilder = AlertDialog.Builder(context)
+                    val inflater =
+                        LayoutInflater.from(context).inflate(R.layout.subscription_message_dialog, null)
+                    dialogBuilder.setView(inflater)
+                    val close = inflater.findViewById<ImageView>(R.id.ivClose)
+                    val btn = inflater.findViewById<TextView>(R.id.btnPay)
+                    val dialog = dialogBuilder.create()
+                    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                    close.setOnClickListener {
+                        dialog.dismiss()
+                    }
+
+                    btn.setOnClickListener {
+                        val intent = Intent(context, UpdatePackageActivity::class.java)
+                        itemView.context.startActivity(intent)
+                        dialog.dismiss()
+                    }
+
+                    dialog.show()
+
+                }
+
+            }
+            else{
+                Utility.itemBackGround(itemView)
+                binding.btnEnquiry.visibility = View.VISIBLE
+            }
             val priority = if (supportDetails.job_priority_id == "1"){
                 "Immediate"
             } else{
                 "Standard"
             }
+
             binding.tvPriorityRatings.text = priority
             binding.rvServiceList.layoutManager = LinearLayoutManager(context)
             val adapter = QuestionAdapter(supportDetails.get_ques_ans)
@@ -76,9 +113,9 @@ class ProviderRequestEnquiryAdapter(val context: Context, val enquiry: List<Cust
             binding.tvDate.text = formattedDate
             val formattedTime = convertTimeTo12HourFormat(supportDetails.job_time)
             binding.tvFixedDay.text = "Required Date: " + supportDetails.job_date + " at " + formattedTime
-            Glide.with(context).load(supportDetails.service_image ?: "").into(binding.ivImage)
+            Glide.with(context).load(supportDetails.service_image ?: "") .apply(
+                RequestOptions.placeholderOf(R.drawable.noimageavailbale)).into(binding.ivImage)
 
-            binding.btnEnquiry.visibility = View.VISIBLE
 
             binding.rvServiceList.layoutManager = LinearLayoutManager(context)
             val questionAdapter = QuestionAdapter(supportDetails.get_ques_ans)

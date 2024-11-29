@@ -19,6 +19,9 @@ class LoginMobileNoHome : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginMobileNoHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val sharedPrefHelper = SharedPreferenceHelper(this)
+        val fcmToken = sharedPrefHelper.getFcmToken()
+        Log.i("TAG", "onCreate: " + fcmToken)
 
         binding.btnGetOtp.setOnClickListener{
             val etMobileNumber = binding.etMobileNumber.text.toString()
@@ -32,7 +35,12 @@ class LoginMobileNoHome : AppCompatActivity() {
             } else {
                 Utility.hideKeyboard(this)
                 binding.progressBar.visibility = View.VISIBLE
-                loginCheckMobileNumber(etMobileNumber, Utility.getDeviceId(this), Constant.API_KEY)
+                if (Constant.FCM_TOKEN.isNotEmpty()) {
+                    loginCheckMobileNumber(
+                        etMobileNumber, Utility.getDeviceId(this), Constant.API_KEY,
+                        Constant.FCM_TOKEN
+                    )
+                }
                 Constant.MOBILE_NO = etMobileNumber
             }
         }
@@ -52,8 +60,8 @@ class LoginMobileNoHome : AppCompatActivity() {
 
     private fun loginCheckMobileNumber(userMobile: String,
                                       deviceId: String,
-                                       apiKey: String) {
-        val addUserDetails = LoginMobileNoModel(userMobile,deviceId,apiKey)
+                                       apiKey: String, fcmToken: String) {
+        val addUserDetails = LoginMobileNoModel(userMobile,deviceId,apiKey, Constant.FCM_TOKEN)
         Log.i("TAG", "addCustomer: $addUserDetails")
         val call = RetrofitClient.api.loginWithMobileNo(addUserDetails)
         call.enqueue(object : Callback<APiModel> {
@@ -77,6 +85,7 @@ class LoginMobileNoHome : AppCompatActivity() {
                     }
                 } else {
                     binding.progressBar.visibility = View.GONE
+                    Toast.makeText(applicationContext, "Invalid Mobile Number", Toast.LENGTH_SHORT).show()
                     Log.e("API", "API call failed with code ${response.code()}")
                 }
             }
@@ -84,7 +93,7 @@ class LoginMobileNoHome : AppCompatActivity() {
             override fun onFailure(call: Call<APiModel>, t: Throwable) {
                 binding.progressBar.visibility = View.GONE
                 Log.e("API", "API call failed with exception: ${t.message}")
-                Toast.makeText(applicationContext, t.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "Invalid Mobile Number", Toast.LENGTH_SHORT).show()
             }
         })
     }

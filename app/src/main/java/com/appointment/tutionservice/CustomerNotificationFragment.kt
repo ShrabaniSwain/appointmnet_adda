@@ -51,11 +51,21 @@ class CustomerNotificationFragment : Fragment() {
         call.enqueue(object : Callback<NotificationResponse> {
             override fun onResponse(call: Call<NotificationResponse>, response: Response<NotificationResponse>) {
                 if (response.isSuccessful) {
-                    notification = response.body()?.data?.notifications ?: emptyList()
-
-                    val adapter = CustometrNotificationAdapter(notification)
-                    binding.rvNotification.adapter = adapter
-                    binding.rvNotification.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+                    if (isAdded) {
+                        notification = response.body()?.data?.notifications ?: emptyList()
+                        if (notification.isEmpty()) {
+                            binding.tvNoData.visibility = View.VISIBLE
+                        } else {
+                            val adapter =
+                                CustometrNotificationAdapter(notification, requireContext())
+                            binding.rvNotification.adapter = adapter
+                            binding.rvNotification.layoutManager = LinearLayoutManager(
+                                requireContext(),
+                                LinearLayoutManager.VERTICAL,
+                                false
+                            )
+                        }
+                    }
 
                     Log.i("TAG", "bannerImage: ${response.body()}")
                 } else {

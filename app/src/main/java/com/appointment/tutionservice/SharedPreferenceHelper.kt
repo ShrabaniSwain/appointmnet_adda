@@ -14,6 +14,7 @@ class SharedPreferenceHelper(val context: Context) {
         private const val APP_USER_TYPE = "userType"
         private const val APP_USER_ID = "userID"
         private const val MOBILE_NO = "mobileNo"
+        private const val FCM_TOKEN = "fcmToken"
     }
 
     private val sharedPreferences: SharedPreferences =
@@ -65,6 +66,15 @@ class SharedPreferenceHelper(val context: Context) {
         return getSharedPreferences(context).getString(MOBILE_NO, "") ?: ""
     }
 
+    fun saveFcmToken(token: String) {
+        val editor = sharedPreferences.edit()
+        editor.putString(FCM_TOKEN, token)
+        editor.apply()
+    }
+
+    fun getFcmToken(): String {
+        return sharedPreferences.getString(FCM_TOKEN, "") ?: ""
+    }
     fun clearSession() {
         val editor = sharedPreferences.edit()
         editor.putBoolean(KEY_IS_LOGGED_IN, false)

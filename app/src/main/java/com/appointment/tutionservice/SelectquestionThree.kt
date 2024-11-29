@@ -1,5 +1,6 @@
 package com.appointment.tutionservice
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +23,7 @@ class SelectquestionThree : AppCompatActivity() {
     private lateinit var binding: ActivitySelectquestionThreeBinding
     private val calendar: Calendar = Calendar.getInstance()
     private lateinit var jobPost: JobPost
+    private var location = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +37,9 @@ class SelectquestionThree : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
 
+        binding.tvLocationType.setOnClickListener {
+            showLocationDialog()
+        }
         binding.tvCalender.setOnClickListener {
             openDatePickerDialog()
         }
@@ -59,6 +64,13 @@ class SelectquestionThree : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         }
+            else if(location.isEmpty()){
+                Toast.makeText(
+                    this,
+                    "Please select the preferred location",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
             else{
                 jobPost = JobPost(
                     Constant.JOBTITLE,binding.tvCalender.text.toString(),binding.tvTime.text.toString(),
@@ -82,7 +94,8 @@ class SelectquestionThree : AppCompatActivity() {
                     Constant.APP_USER_KEY,"",
                     0.0,
                     0.0,
-                    Constant.SERVICE_PROVIDER_ID.toInt()
+                    Constant.SERVICE_PROVIDER_ID.toInt(),
+                    location
                 )
 
                 customerJobPost(jobPost)
@@ -96,6 +109,25 @@ class SelectquestionThree : AppCompatActivity() {
         binding.rvChooseFee.layoutManager = GridLayoutManager(applicationContext, 3, GridLayoutManager.VERTICAL, false)
     }
 
+    private fun showLocationDialog() {
+        val locationOptions = arrayOf("My City", "My State", "All Over Country")
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Select Location")
+        builder.setItems(locationOptions) { _, which ->
+            val selectedLocation = locationOptions[which]
+            binding.tvLocationType.text = selectedLocation
+
+            location = when (selectedLocation) {
+                "My City" -> "1"
+                "My State" -> "2"
+                "All Over Country" -> "3"
+                else -> "1"
+            }
+        }
+
+        builder.show()
+    }
     private fun updateDateField() {
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         binding.tvCalender.text = sdf.format(calendar.time)

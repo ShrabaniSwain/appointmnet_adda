@@ -8,17 +8,33 @@
     tools:context=".LoginSignUpActivity">
 
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvTopText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:text="Appointment Adda में आपका स्वागत है! \n \n Appointment Adda एक कनेक्टिंग प्लेटफॉर्म है जो बिजनेस और कस्टमर्स को डायरेक्ट कनेक्ट करने का काम करता है।
+ \n \n शुरुआत करने के लिए नीचे दिए गए विकल्पों में से चुनें:"/>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/loginSingUpCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="15dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginVertical="30dp"
         android:background="@color/white"
         app:cardCornerRadius="8dp"
+        app:layout_constraintBottom_toTopOf="@id/tvBottomText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/tvTopText">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -45,7 +61,7 @@
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam commo sit amet ipsum eu auctor Nunc a lacus rhoncus purus molestie pulvinar."
+                android:text="If you are looking for service then choose customer and if you want to provide service / product then choose business"
                 android:textColor="#7A7B80"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -127,7 +143,7 @@
                         android:layout_width="80dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/teacher" />
+                        android:src="@drawable/business" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -146,10 +162,24 @@
 
     </androidx.cardview.widget.CardView>
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvBottomText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/loginSingUpCardView"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:text="अगर आप ग्राहक हैं, तो सेवाएं बुक करने या अपॉइंटमेंट लेने के लिए ग्राहक (Customers) बटन पर क्लिक करें। \n \n अगर आप बिजनेस ओनर (manufacturer, trader, wholesalers) या सर्विस प्रोवाइडर (जैसे: plumber, electrician, taxi driver) हैं, तो अपना बिजनेस रजिस्टर करने और सेवाएं मैनेज करने के लिए (Business) बटन पर क्लिक करें।"/>
+
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:src="@drawable/logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

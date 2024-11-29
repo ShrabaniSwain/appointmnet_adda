@@ -56,9 +56,11 @@ class ProviderProfileDetails : AppCompatActivity() {
             Constant.PROVIDER_ID,
             Constant.APP_VERSION_NAME.toString()
         )
+
         call.enqueue(object : Callback<ProviderDetailsResponse> {
             override fun onResponse(call: Call<ProviderDetailsResponse>, response: Response<ProviderDetailsResponse>) {
                 if (response.isSuccessful) {
+                    Log.i("TAG", "onResponse: " + response)
 
                     binding.progressBar.visibility = View.GONE
                     notification = response.body()?.data?.app_user_data!!
@@ -72,16 +74,16 @@ class ProviderProfileDetails : AppCompatActivity() {
                         binding.verifiedBadge.visibility = View.VISIBLE
                     }
                     else{
-                        binding.verifiedBadge.visibility = View.VISIBLE
+                        binding.notVerifiedBadge.visibility = View.VISIBLE
                     }
                     Glide.with(applicationContext)
                         .load(response.body()?.data?.app_user_data?.discount_image)
-                        .apply(RequestOptions.placeholderOf(R.drawable.banner))
+                        .apply(RequestOptions.placeholderOf(R.drawable.noimageavailbale))
                         .into(binding.bannerImage)
 
                     Glide.with(applicationContext)
                         .load(response.body()?.data?.app_user_data?.business_logo_image)
-                        .apply(RequestOptions.placeholderOf(R.drawable.banner))
+                        .apply(RequestOptions.placeholderOf(R.drawable.noimageavailbale))
                         .into(binding.logoImage)
 
                     Glide.with(applicationContext)
@@ -127,16 +129,26 @@ class ProviderProfileDetails : AppCompatActivity() {
                     val experience = response.body()?.data?.app_user_data?.experience ?: "0"
                     binding.experience.text = Editable.Factory.getInstance().newEditable("$experience Years Exp.")
 
-                    binding.progressBarLine.progress = response.body()?.data?.customer_ratings?.groupByratingValue?.get(5)?.total_rating?.toInt()
-                        ?: 0
-                    binding.progressBarLine4.progress = response.body()?.data?.customer_ratings?.groupByratingValue?.get(4)?.total_rating?.toInt()
-                        ?: 0
-                    binding.progressBarLine3.progress = response.body()?.data?.customer_ratings?.groupByratingValue?.get(3)?.total_rating?.toInt()
-                        ?: 0
-                    binding.progressBarLine2.progress = response.body()?.data?.customer_ratings?.groupByratingValue?.get(2)?.total_rating?.toInt()
-                        ?: 0
-                    binding.progressBarLine1.progress = response.body()?.data?.customer_ratings?.groupByratingValue?.get(1)?.total_rating?.toInt()
-                        ?: 0
+                    val groupByRating = response.body()?.data?.customer_ratings?.groupByratingValue ?: emptyList()
+                    binding.progressBarLine.progress = groupByRating.getOrNull(5)?.total_rating?.toInt() ?: 0
+                    binding.progressBarLine4.progress = groupByRating.getOrNull(4)?.total_rating?.toInt() ?: 0
+                    binding.progressBarLine3.progress = groupByRating.getOrNull(3)?.total_rating?.toInt() ?: 0
+                    binding.progressBarLine2.progress = groupByRating.getOrNull(2)?.total_rating?.toInt() ?: 0
+                    binding.progressBarLine1.progress = groupByRating.getOrNull(1)?.total_rating?.toInt() ?: 0
+
+
+                    binding.btnWhatsapp.setOnClickListener {
+                        val phoneNumber = response.body()?.data?.app_user_data?.user_mobile ?: ""
+                        val url = "https://api.whatsapp.com/send?phone=$phoneNumber"
+                        try {
+                            val intent = Intent(Intent.ACTION_VIEW)
+                            intent.data = Uri.parse(url)
+                            startActivity(intent)
+                        } catch (e: ActivityNotFoundException) {
+                            Toast.makeText(applicationContext, "WhatsApp is not installed", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
                     val website = response.body()?.data?.app_user_data?.website ?: ""
 
                         binding.websiteButton.setOnClickListener {
@@ -216,7 +228,6 @@ class ProviderProfileDetails : AppCompatActivity() {
                     Log.i("TAG", "responseBody: ${response.body()}")
                 } else {
                     binding.progressBar.visibility = View.GONE
-                    val errorBody = response.errorBody()
                     Toast.makeText(applicationContext, response.message(), Toast.LENGTH_SHORT)
                         .show()
                     Log.i("TAG", "responseBody: ${response.body()}")

@@ -39,11 +39,20 @@ class LoginSignUpActivity : AppCompatActivity() {
             binding.tickHomeTutor.visibility = View.GONE
             binding.tickGuardian.visibility = View.VISIBLE
 
-            val intent = Intent(this, PackageActivity::class.java)
+            val intent = Intent(
+                applicationContext,
+                ProfileCreateSuccessActivity::class.java
+            )
             intent.putExtra("CARD_TYPE", Constant.PROVIDER_CARD)
             Constant.CARD_TYPE = Constant.PROVIDER_CARD
             startActivity(intent)
             finish()
+
+//            val intent = Intent(this, PackageActivity::class.java)
+//            intent.putExtra("CARD_TYPE", Constant.PROVIDER_CARD)
+//            Constant.CARD_TYPE = Constant.PROVIDER_CARD
+//            startActivity(intent)
+//            finish()
         }
     }
 

@@ -1,6 +1,7 @@
 package com.appointment.tutionservice
 
 import android.content.Context
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,10 @@ class UpdatePackageAdapter(val context: Context, val packageData: List<Membershi
         fun bind(notificationText: MembershipPackage) {
             Utility.itemBackGround(itemView)
             binding.title.text = notificationText.packageName
+
+            val htmlText = notificationText.packageDescription
+            val cleanText = Html.fromHtml(htmlText).toString()
+            binding.featuresDes.text = cleanText
             binding.validateDays.text = notificationText.validityDays + " Days"
             binding.priceAmount.text = "Rs. "+ notificationText.packagePrice
             binding.btnCallNow.setOnClickListener {

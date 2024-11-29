@@ -2,13 +2,21 @@ package com.appointment.tutionservice
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.View
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.appointment.tutionservice.Constant.FCM_TOKEN
 import com.appointment.tutionservice.databinding.ActivitySplashBinding
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
@@ -38,13 +46,14 @@ class SplashActivity : AppCompatActivity() {
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
-                Log.i("FirebaseMessaging", "Fetching FCM registration token failed", task.exception)
+                Log.i("FirebaseMessaging", "Fetching FCM registration token", task.exception)
                 return@OnCompleteListener
             }
 
             // Get new FCM registration token
             val token = task.result
-
+            sharedPrefHelper.saveFcmToken(token)
+            FCM_TOKEN = token
             Log.i("FirebaseMessaging", "Fetching FCM registration token failed  $token", )
 
         })
@@ -72,4 +81,5 @@ class SplashActivity : AppCompatActivity() {
             }
         }, 2000)
     }
+
 }

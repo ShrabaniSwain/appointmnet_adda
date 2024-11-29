@@ -1,5 +1,6 @@
 package com.appointment.tutionservice
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -24,6 +25,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 class TodoListActivity : AppCompatActivity() {
@@ -32,6 +34,7 @@ class TodoListActivity : AppCompatActivity() {
     private val calendar: Calendar = Calendar.getInstance()
     private lateinit var todoList: List<TodoGetData>
 
+    @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -53,6 +56,7 @@ class TodoListActivity : AppCompatActivity() {
             val priority = inflater.findViewById<TextView>(R.id.tvPrority)
             val save = inflater.findViewById<TextView>(R.id.btnSendEnquiry)
             val details = inflater.findViewById<EditText>(R.id.etTaskDeatils)
+
             updateDateField(date)
             val dialog = dialogBuilder.create()
             dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -64,6 +68,8 @@ class TodoListActivity : AppCompatActivity() {
             date.setOnClickListener {
                 openDatePickerDialog(date)
             }
+
+
             priority.setOnClickListener { view ->
                 val popupMenu = PopupMenu(this, view)
                 popupMenu.menuInflater.inflate(R.menu.popup_priority, popupMenu.menu)
@@ -103,10 +109,17 @@ class TodoListActivity : AppCompatActivity() {
                         "Low" -> "4"
                         else -> "2"
                     }
+                    val selectedDate = date.text.toString().trim()
+                    val inputFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+                    val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+                    val date1= inputFormat.parse(selectedDate)
+                    val formattedDate = date1?.let { outputFormat.format(it) }
                     val todoListSendData = TodoListSendData(
                         "0",
                         Constant.Provider_Name,
                         details.text.toString(),
+                        formattedDate.toString(),
                         status,"0",
                         Constant.MOBILE_NO,
                         Constant.API_KEY,
@@ -119,7 +132,8 @@ class TodoListActivity : AppCompatActivity() {
                         0.0,
                         0.0
                     )
-                    Log.i("TAG", "onCreate: " + todoListSendData)
+                    Log.i("TAG", "onCreate: " + todoListSendData + formattedDate + " " )
+                    dialog.dismiss()
                     appSaveTodoData(todoListSendData)
                 }
             }

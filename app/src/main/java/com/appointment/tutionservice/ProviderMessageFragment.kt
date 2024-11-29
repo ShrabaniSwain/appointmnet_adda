@@ -31,7 +31,13 @@ class ProviderMessageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getAppUserMessages()
+        if (Utility.isInternetAvailable(requireContext())) {
+            getAppUserMessages()
+        }
+        else {
+            Toast.makeText(requireContext(), "No internet connection", Toast.LENGTH_SHORT).show()
+        }
+
         binding.pullToRefresh.setOnRefreshListener {
             getAppUserMessages()
 
@@ -58,14 +64,20 @@ class ProviderMessageFragment : Fragment() {
                         binding.pullToRefresh.isRefreshing = false
                         val business = response.body()
                         message = business?.data?.appUserMessages ?: emptyList()
-
-                       messageAdapter = ProviderMessageAdapter(requireContext(), message)
-                        binding.rvMessage.layoutManager = LinearLayoutManager(
-                            requireContext(),
-                            LinearLayoutManager.VERTICAL,
-                            false
-                        )
-                        binding.rvMessage.adapter = messageAdapter
+                        if (message.isEmpty()){
+                            binding.tvNoData.visibility = View.VISIBLE
+                        }
+                        else {
+                            if (isAdded) {
+                                messageAdapter = ProviderMessageAdapter(requireContext(), message)
+                                binding.rvMessage.layoutManager = LinearLayoutManager(
+                                    requireContext(),
+                                    LinearLayoutManager.VERTICAL,
+                                    false
+                                )
+                                binding.rvMessage.adapter = messageAdapter
+                            }
+                        }
 
                         Log.i("TAG", "getServiceNameByType: ${response.body()}")
                     }
@@ -86,16 +98,20 @@ class ProviderMessageFragment : Fragment() {
     }
 
     private fun showProgressBar() {
-        binding.progressBar.visibility = View.VISIBLE
-        requireActivity().window.setFlags(
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-        )
+        if (isAdded) {
+            binding.progressBar.visibility = View.VISIBLE
+            requireActivity().window.setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            )
+        }
     }
 
     private fun hideProgressBar() {
-        binding.progressBar.visibility = View.GONE
-        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        if (isAdded) {
+            binding.progressBar.visibility = View.GONE
+            requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        }
     }
 
 }

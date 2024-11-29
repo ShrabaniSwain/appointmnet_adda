@@ -27,11 +27,13 @@ class OtpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityOtpBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val sharedPrefHelper = SharedPreferenceHelper(this)
+       val fcmToken = sharedPrefHelper.getFcmToken()
 
         binding.refreshBtn.setOnClickListener {
             Utility.hideKeyboard(this)
             binding.progressBar.visibility = View.VISIBLE
-            loginCheckMobileNumber(MOBILE_NO, Utility.getDeviceId(this), API_KEY)
+            loginCheckMobileNumber(MOBILE_NO, Utility.getDeviceId(this), API_KEY, fcmToken)
         }
         val otpFields = arrayOf(
             binding.otpBox1,
@@ -194,8 +196,8 @@ class OtpActivity : AppCompatActivity() {
 
     private fun loginCheckMobileNumber(userMobile: String,
                                        deviceId: String,
-                                       apiKey: String) {
-        val addUserDetails = LoginMobileNoModel(userMobile,deviceId,apiKey)
+                                       apiKey: String, fcmToken: String) {
+        val addUserDetails = LoginMobileNoModel(userMobile,deviceId,apiKey, fcmToken)
         Log.i("TAG", "addCustomer: $addUserDetails")
         val call = RetrofitClient.api.loginWithMobileNo(addUserDetails)
         call.enqueue(object : Callback<APiModel> {

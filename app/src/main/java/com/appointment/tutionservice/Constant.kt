@@ -47,7 +47,17 @@ object Constant {
     var BANK_ID = ""
     var Provider_Name = ""
     var CUSTOMER_Name = ""
+    var NOTIFICATION_DETAILS = ""
+    var NOTIFICATION_IMAGE = ""
+    var ADDITIONAL_DATA = ""
+    var NOTIFICATION_ID = ""
+    var WALLET_AMOUNT = ""
+    var PUSH_NOTIFICATION_AMOUNT = ""
+    var MESSAGE_AMOUNT = ""
+    var RAZORPAY_KEY = "rzp_live_IUZIC74P5DBuVS"
     var Question = false
+    var is_membership_package_expire = false
     var questionnaireList: List<QuestionnaireAnswer> = emptyList()
+    var FCM_TOKEN = ""
 
 }

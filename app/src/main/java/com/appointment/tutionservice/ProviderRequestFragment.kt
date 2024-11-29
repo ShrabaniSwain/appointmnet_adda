@@ -49,9 +49,13 @@ class ProviderRequestFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        showProgressBar()
-        getCustomerJobListing()
-
+        if (Utility.isInternetAvailable(requireContext())) {
+            showProgressBar()
+            getCustomerJobListing()
+        }
+        else {
+            Toast.makeText(requireContext(), "No internet connection", Toast.LENGTH_SHORT).show()
+        }
         binding.etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
@@ -172,8 +176,9 @@ class ProviderRequestFragment : Fragment() {
     private fun filterLists(searchText: String = "") {
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         filteredEnquiry = enquiry.filter {
-            it.service_name.contains(searchText, ignoreCase = true) &&
+            it.service_name?.contains(searchText, ignoreCase = true) == true &&
                     isWithinDateRange(sdf.parse(it.doc))
+
         }
         filteredAppointment = appointment.filter {
             it.service_name.contains(searchText, ignoreCase = true) &&
@@ -238,16 +243,20 @@ class ProviderRequestFragment : Fragment() {
     }
 
     private fun showProgressBar() {
-        binding.progressBar.visibility = View.VISIBLE
-        requireActivity().window.setFlags(
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-        )
+        if (isAdded) {
+            binding.progressBar.visibility = View.VISIBLE
+            requireActivity().window.setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            )
+        }
     }
 
     private fun hideProgressBar() {
-        binding.progressBar.visibility = View.GONE
-        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        if (isAdded) {
+            binding.progressBar.visibility = View.GONE
+            requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        }
     }
 
     private fun getCustomerJobListing() {
@@ -262,31 +271,56 @@ class ProviderRequestFragment : Fragment() {
             Constant.APP_USER_ID.toString(),
             Constant.APP_VERSION_NAME.toString(), "1", "0","0","0"
         )
+        Log.d("AppValues", "MOBILE_NO: ${Constant.MOBILE_NO}, " +
+                "API_KEY: ${Constant.API_KEY}, " +
+                "Device ID: ${Utility.getDeviceId(requireContext())}, " +
+                "Device Token: ${Utility.deviceToken}, " +
+                "APP_USER_KEY: ${Constant.APP_USER_KEY}, " +
+                "APP_USER_ID: ${Constant.APP_USER_ID.toString()}, " +
+                "APP_VERSION_NAME: ${Constant.APP_VERSION_NAME.toString()}")
+
         call.enqueue(object : Callback<BookingApiResponse> {
             override fun onResponse(call: Call<BookingApiResponse>, response: Response<BookingApiResponse>) {
+                Log.i("TAG", "onResponse: " + call + "response: " + response)
                 if (response.isSuccessful) {
                     if (response.body()?.status == 1) {
-                        hideProgressBar()
-                        val questionnaireResponse = response.body()
-                        appointment = questionnaireResponse?.data?.appointment_list ?: emptyList()
-                        enquiry = questionnaireResponse?.data?.customer_enquiry_list ?: emptyList()
-                        filterLists()
-                        if (filteredEnquiry.isEmpty()){
-                            binding.tvNoData.visibility = View.VISIBLE
-                        }else{
-                            binding.tvNoData.visibility = View.GONE
+                        if (isAdded) {
+                            hideProgressBar()
+                            val questionnaireResponse = response.body()
+                            appointment =
+                                questionnaireResponse?.data?.appointment_list ?: emptyList()
+                            enquiry =
+                                questionnaireResponse?.data?.customer_enquiry_list ?: emptyList()
+                            filterLists()
+                            if (filteredEnquiry.isEmpty()) {
+                                binding.tvNoData.visibility = View.VISIBLE
+                            } else {
+                                binding.tvNoData.visibility = View.GONE
 
+                            }
+                            requestAppointmentAdapter = ProviderRequestAppointmentAdapter(
+                                requireContext(),
+                                filteredAppointment
+                            )
+                            binding.rvServiceAppointment.layoutManager =
+                                LinearLayoutManager(
+                                    requireContext(),
+                                    LinearLayoutManager.VERTICAL,
+                                    false
+                                )
+                            binding.rvServiceAppointment.adapter = requestAppointmentAdapter
+
+
+                            requestEnquiryAdapter =
+                                ProviderRequestEnquiryAdapter(requireContext(), filteredEnquiry)
+                            binding.rvService.layoutManager =
+                                LinearLayoutManager(
+                                    requireContext(),
+                                    LinearLayoutManager.VERTICAL,
+                                    false
+                                )
+                            binding.rvService.adapter = requestEnquiryAdapter
                         }
-                        requestAppointmentAdapter = ProviderRequestAppointmentAdapter(requireContext(), filteredAppointment)
-                        binding.rvServiceAppointment.layoutManager =
-                            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                        binding.rvServiceAppointment.adapter = requestAppointmentAdapter
-
-
-                        requestEnquiryAdapter = ProviderRequestEnquiryAdapter(requireContext(), filteredEnquiry)
-                        binding.rvService.layoutManager =
-                            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-                        binding.rvService.adapter = requestEnquiryAdapter
 
                         Log.i("TAG", "getServiceNameByType: ${response.body()}")
                     }
