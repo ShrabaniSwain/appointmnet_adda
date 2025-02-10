@@ -59,7 +59,7 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation ("com.squareup.picasso:picasso:2.71828")
     implementation ("com.razorpay:checkout:1.6.38")
-
+    implementation ("com.google.android.play:core:1.10.3")
     implementation ("com.squareup.okhttp3:okhttp:4.9.1")
     implementation ("com.squareup.okhttp3:logging-interceptor:4.9.1")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")

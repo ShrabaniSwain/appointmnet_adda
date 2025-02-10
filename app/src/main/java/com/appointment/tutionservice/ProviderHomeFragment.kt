@@ -128,6 +128,7 @@ class ProviderHomeFragment : Fragment(), PaymentResultListener {
 
                 if (response.isSuccessful) {
                     val aboutResponse = response.body()
+                    Log.i("TAG", "onViewCreated: " + response + aboutResponse)
                     aboutResponse?.let { handleVideoResponse(it.data) }
                 } else {
                     Log.i("TAG", "API Call failed with error code: ${response.code()}")
@@ -149,6 +150,10 @@ class ProviderHomeFragment : Fragment(), PaymentResultListener {
         }
         binding.notificationBtn.setOnClickListener {
             val intent = Intent(requireContext(), ProviderNotificationActivity::class.java)
+            startActivity(intent)
+        }
+        binding.btnAddProduct.setOnClickListener {
+            val intent = Intent(requireContext(), MyProductActivity::class.java)
             startActivity(intent)
         }
 

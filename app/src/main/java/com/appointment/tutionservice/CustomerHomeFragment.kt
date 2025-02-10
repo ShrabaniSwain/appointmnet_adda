@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -82,8 +83,20 @@ class CustomerHomeFragment : Fragment() {
         binding.tvLocationName.text = Constant.LOCATION_NAME
         fetchBannerData()
         binding.etSearch.setOnClickListener {
-                val intent = Intent(requireContext(), SearchServiceActivity::class.java)
-                startActivity(intent)
+
+//                val intent = Intent(requireContext(), SearchServiceActivity::class.java)
+//                startActivity(intent)
+        }
+
+        binding.productMenu.setOnClickListener {
+            val popupMenu = PopupMenu(requireContext(), binding.productMenu)
+            popupMenu.menu.add("Service")
+            popupMenu.menu.add("Product")
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                binding.productMenu.text = menuItem.title
+                true
+            }
+            popupMenu.show()
         }
     }
 

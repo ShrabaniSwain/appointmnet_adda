@@ -1,6 +1,8 @@
 package com.appointment.tutionservice
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -20,6 +22,11 @@ import com.bumptech.glide.request.RequestOptions
 import com.appointment.tutionservice.Constant.CUSTOMER_Name
 import com.appointment.tutionservice.databinding.ActivityMainBinding
 import com.appointment.tutionservice.databinding.HeaderLayoutBinding
+import com.google.android.gms.tasks.Task
+import com.google.android.play.core.appupdate.AppUpdateInfo
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.UpdateAvailability
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,21 +40,17 @@ class CustomerMainActivity : AppCompatActivity() {
     private val requestFragment: Fragment = CustomerRequestsFragment()
     private val notificationFragment: Fragment = CustomerNotificationFragment()
     private val messagesFragment: Fragment = CustomerMessagesFragment()
+    private lateinit var appUpdateManager: AppUpdateManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        appUpdateManager = AppUpdateManagerFactory.create(this)
 
         showProgressBar()
         getCustomerProfileDetails()
-
-//        val intent = Intent(this, ApiService::class.java)
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            startForegroundService(intent)
-//        } else {
-//            startService(intent)
-//        }
+        checkForUpdate()
 
         headerBinding = HeaderLayoutBinding.bind(binding.navView.getHeaderView(0))
         Glide.with(applicationContext)
@@ -123,6 +126,61 @@ class CustomerMainActivity : AppCompatActivity() {
             true
         }
 
+    }
+
+    private fun checkForUpdate() {
+        val appUpdateManager = AppUpdateManagerFactory.create(this)
+        val appUpdateInfoTask: com.google.android.play.core.tasks.Task<AppUpdateInfo> = appUpdateManager.appUpdateInfo
+
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+                // Show the update dialog
+                showUpdateDialog()
+            } else {
+                Toast.makeText(this, "Your app is up to date.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // Check for failures
+        appUpdateInfoTask.addOnFailureListener { exception ->
+            Log.e("AppUpdate", "Error checking update availability: ${exception.message}")
+        }
+    }
+
+
+    private fun showUpdateDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Update Available")
+        builder.setMessage("A new version of the app is available. Please update to enjoy the latest features.")
+
+        builder.setPositiveButton("Update Now") { _, _ ->
+            // Redirect to Play Store
+            redirectToPlayStore()
+        }
+
+        builder.setNegativeButton("Later") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun redirectToPlayStore() {
+        val packageName = packageName
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.appointment.tutionservice&pli=1"))
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            // Fallback to the web Play Store URL
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://play.google.com/store/apps/details?id=com.appointment.tutionservice&pli=1")
+            )
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        }
     }
 
     private fun openNavView(){
