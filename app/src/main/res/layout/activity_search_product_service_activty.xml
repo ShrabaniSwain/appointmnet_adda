@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:background="@color/back_ground_color"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SearchProductServiceActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_primary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_arrow_back_ios_24"
+            app:layout_constraintRight_toLeftOf="@id/ivNotification"
+            android:layout_marginEnd="15dp"
+            android:layout_gravity="start"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/toolbarSearch"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:layout_margin="16dp"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+<!--        <AutoCompleteTextView-->
+<!--            android:id="@+id/etSearch"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="Search"-->
+<!--            android:inputType="text"-->
+<!--            android:maxLines="1"-->
+<!--            android:drawablePadding="10dp"-->
+<!--            android:drawableStart="@drawable/baseline_search_24"-->
+<!--            android:drawableTint="@color/red"-->
+<!--            android:background="@drawable/service_box_border"-->
+<!--            android:textSize="16sp"-->
+<!--            android:padding="10dp"-->
+<!--            android:backgroundTint="@color/white"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            android:layout_marginEnd="10dp"-->
+<!--            android:layout_marginStart="20dp"-->
+<!--            android:layout_marginVertical="10dp"/>-->
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/productMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:drawablePadding="10dp"
+        android:background="@drawable/search_box"
+        android:textSize="16sp"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="15dp"
+        android:text="Product"
+        android:backgroundTint="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        app:drawableEndCompat="@drawable/baseline_keyboard_arrow_down_24"
+        app:drawableTint="@color/red" />
+
+    <TextView
+        android:id="@+id/etSearch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Search"
+        android:inputType="text"
+        android:maxLines="1"
+        android:drawablePadding="10dp"
+        android:background="@drawable/search_box"
+        android:textSize="16sp"
+        android:padding="10dp"
+        android:backgroundTint="@color/white"
+        app:layout_constraintStart_toEndOf="@id/productMenu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        app:drawableEndCompat="@drawable/baseline_search_24"
+        app:drawableTint="@color/red" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/productMenu"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="16dp"
+        android:visibility="gone"
+        android:backgroundTint="@color/back_ground_color"
+        app:cardCornerRadius="@dimen/dp_10"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvService"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_product_list" />
+
+        </ScrollView>
+
+    </androidx.cardview.widget.CardView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginVertical="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/productMenu">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvProduct"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="16dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_service_list" />
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:indeterminateTint="@color/color_primary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

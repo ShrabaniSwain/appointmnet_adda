@@ -86,6 +86,9 @@ class CustomerHomeFragment : Fragment() {
 
 //                val intent = Intent(requireContext(), SearchServiceActivity::class.java)
 //                startActivity(intent)
+
+            val intent = Intent(requireContext(), SearchProductServiceActivity::class.java)
+            startActivity(intent)
         }
 
         binding.productMenu.setOnClickListener {

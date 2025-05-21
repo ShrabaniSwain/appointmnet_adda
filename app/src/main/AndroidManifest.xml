@@ -28,6 +28,15 @@
         android:theme="@style/AppBarTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ServiceProductDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SpecialPriceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SearchProductServiceActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddProductActivity"
             android:exported="false" />
         <activity
